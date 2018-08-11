@@ -5,9 +5,9 @@
   <subtitle>gamjamanduu의 블로그</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="http://ksw1652.github.io/"/>
   <updated>2018-08-11T19:25:35.399Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://ksw1652.github.io/</id>
   
   <author>
     <name>gamjamanduu</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Front-End Interview Question - CSS Question (작성 중)</title>
-    <link href="http://yoursite.com/2018/08/08/front-end-interview-css-question/"/>
-    <id>http://yoursite.com/2018/08/08/front-end-interview-css-question/</id>
+    <link href="http://ksw1652.github.io/2018/08/08/front-end-interview-css-question/"/>
+    <id>http://ksw1652.github.io/2018/08/08/front-end-interview-css-question/</id>
     <published>2018-08-08T07:47:00.000Z</published>
     <updated>2018-08-11T19:25:35.399Z</updated>
     
@@ -32,23 +32,23 @@
     
     </summary>
     
-      <category term="인터뷰 문제은행" scheme="http://yoursite.com/categories/%EC%9D%B8%ED%84%B0%EB%B7%B0-%EB%AC%B8%EC%A0%9C%EC%9D%80%ED%96%89/"/>
+      <category term="인터뷰 문제은행" scheme="http://ksw1652.github.io/categories/%EC%9D%B8%ED%84%B0%EB%B7%B0-%EB%AC%B8%EC%A0%9C%EC%9D%80%ED%96%89/"/>
     
     
-      <category term="FrontEnd" scheme="http://yoursite.com/tags/FrontEnd/"/>
+      <category term="FrontEnd" scheme="http://ksw1652.github.io/tags/FrontEnd/"/>
     
-      <category term="Interview" scheme="http://yoursite.com/tags/Interview/"/>
+      <category term="Interview" scheme="http://ksw1652.github.io/tags/Interview/"/>
     
-      <category term="CSS" scheme="http://yoursite.com/tags/CSS/"/>
+      <category term="CSS" scheme="http://ksw1652.github.io/tags/CSS/"/>
     
-      <category term="Question" scheme="http://yoursite.com/tags/Question/"/>
+      <category term="Question" scheme="http://ksw1652.github.io/tags/Question/"/>
     
   </entry>
   
   <entry>
     <title>Front-End Interview Question - HTML Question</title>
-    <link href="http://yoursite.com/2018/08/02/front-end-interview-html-question/"/>
-    <id>http://yoursite.com/2018/08/02/front-end-interview-html-question/</id>
+    <link href="http://ksw1652.github.io/2018/08/02/front-end-interview-html-question/"/>
+    <id>http://ksw1652.github.io/2018/08/02/front-end-interview-html-question/</id>
     <published>2018-08-02T08:13:00.000Z</published>
     <updated>2018-08-11T19:15:47.370Z</updated>
     
@@ -61,23 +61,23 @@
     
     </summary>
     
-      <category term="인터뷰 문제은행" scheme="http://yoursite.com/categories/%EC%9D%B8%ED%84%B0%EB%B7%B0-%EB%AC%B8%EC%A0%9C%EC%9D%80%ED%96%89/"/>
+      <category term="인터뷰 문제은행" scheme="http://ksw1652.github.io/categories/%EC%9D%B8%ED%84%B0%EB%B7%B0-%EB%AC%B8%EC%A0%9C%EC%9D%80%ED%96%89/"/>
     
     
-      <category term="FrontEnd" scheme="http://yoursite.com/tags/FrontEnd/"/>
+      <category term="FrontEnd" scheme="http://ksw1652.github.io/tags/FrontEnd/"/>
     
-      <category term="Interview" scheme="http://yoursite.com/tags/Interview/"/>
+      <category term="Interview" scheme="http://ksw1652.github.io/tags/Interview/"/>
     
-      <category term="Question" scheme="http://yoursite.com/tags/Question/"/>
+      <category term="Question" scheme="http://ksw1652.github.io/tags/Question/"/>
     
-      <category term="HTML" scheme="http://yoursite.com/tags/HTML/"/>
+      <category term="HTML" scheme="http://ksw1652.github.io/tags/HTML/"/>
     
   </entry>
   
   <entry>
     <title>Front-End Interview Question - Normal Question</title>
-    <link href="http://yoursite.com/2018/07/31/front-end-interview-nomal-question/"/>
-    <id>http://yoursite.com/2018/07/31/front-end-interview-nomal-question/</id>
+    <link href="http://ksw1652.github.io/2018/07/31/front-end-interview-nomal-question/"/>
+    <id>http://ksw1652.github.io/2018/07/31/front-end-interview-nomal-question/</id>
     <published>2018-07-31T01:14:00.000Z</published>
     <updated>2018-08-11T19:15:47.366Z</updated>
     
@@ -90,21 +90,21 @@
     
     </summary>
     
-      <category term="인터뷰 문제은행" scheme="http://yoursite.com/categories/%EC%9D%B8%ED%84%B0%EB%B7%B0-%EB%AC%B8%EC%A0%9C%EC%9D%80%ED%96%89/"/>
+      <category term="인터뷰 문제은행" scheme="http://ksw1652.github.io/categories/%EC%9D%B8%ED%84%B0%EB%B7%B0-%EB%AC%B8%EC%A0%9C%EC%9D%80%ED%96%89/"/>
     
     
-      <category term="FrontEnd" scheme="http://yoursite.com/tags/FrontEnd/"/>
+      <category term="FrontEnd" scheme="http://ksw1652.github.io/tags/FrontEnd/"/>
     
-      <category term="Interview" scheme="http://yoursite.com/tags/Interview/"/>
+      <category term="Interview" scheme="http://ksw1652.github.io/tags/Interview/"/>
     
-      <category term="Question" scheme="http://yoursite.com/tags/Question/"/>
+      <category term="Question" scheme="http://ksw1652.github.io/tags/Question/"/>
     
   </entry>
   
   <entry>
     <title>Javascript Prototype</title>
-    <link href="http://yoursite.com/2018/07/30/javascript-prototype/"/>
-    <id>http://yoursite.com/2018/07/30/javascript-prototype/</id>
+    <link href="http://ksw1652.github.io/2018/07/30/javascript-prototype/"/>
+    <id>http://ksw1652.github.io/2018/07/30/javascript-prototype/</id>
     <published>2018-07-29T15:00:00.000Z</published>
     <updated>2018-08-11T19:15:47.368Z</updated>
     
@@ -117,19 +117,19 @@
     
     </summary>
     
-      <category term="Javascript" scheme="http://yoursite.com/categories/Javascript/"/>
+      <category term="Javascript" scheme="http://ksw1652.github.io/categories/Javascript/"/>
     
     
-      <category term="Javascript" scheme="http://yoursite.com/tags/Javascript/"/>
+      <category term="Javascript" scheme="http://ksw1652.github.io/tags/Javascript/"/>
     
-      <category term="Prototype" scheme="http://yoursite.com/tags/Prototype/"/>
+      <category term="Prototype" scheme="http://ksw1652.github.io/tags/Prototype/"/>
     
   </entry>
   
   <entry>
     <title>Codiliy Lesson 1 Iteration</title>
-    <link href="http://yoursite.com/2018/07/26/codility-lesson-01/"/>
-    <id>http://yoursite.com/2018/07/26/codility-lesson-01/</id>
+    <link href="http://ksw1652.github.io/2018/07/26/codility-lesson-01/"/>
+    <id>http://ksw1652.github.io/2018/07/26/codility-lesson-01/</id>
     <published>2018-07-25T15:00:00.000Z</published>
     <updated>2018-08-11T19:15:47.352Z</updated>
     
@@ -142,21 +142,21 @@
     
     </summary>
     
-      <category term="코딩테스트" scheme="http://yoursite.com/categories/%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8/"/>
+      <category term="코딩테스트" scheme="http://ksw1652.github.io/categories/%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8/"/>
     
     
-      <category term="이직" scheme="http://yoursite.com/tags/%EC%9D%B4%EC%A7%81/"/>
+      <category term="이직" scheme="http://ksw1652.github.io/tags/%EC%9D%B4%EC%A7%81/"/>
     
-      <category term="코딜리티" scheme="http://yoursite.com/tags/%EC%BD%94%EB%94%9C%EB%A6%AC%ED%8B%B0/"/>
+      <category term="코딜리티" scheme="http://ksw1652.github.io/tags/%EC%BD%94%EB%94%9C%EB%A6%AC%ED%8B%B0/"/>
     
-      <category term="코테" scheme="http://yoursite.com/tags/%EC%BD%94%ED%85%8C/"/>
+      <category term="코테" scheme="http://ksw1652.github.io/tags/%EC%BD%94%ED%85%8C/"/>
     
   </entry>
   
   <entry>
     <title>이직을 준비하면서</title>
-    <link href="http://yoursite.com/2018/07/25/blog-start/"/>
-    <id>http://yoursite.com/2018/07/25/blog-start/</id>
+    <link href="http://ksw1652.github.io/2018/07/25/blog-start/"/>
+    <id>http://ksw1652.github.io/2018/07/25/blog-start/</id>
     <published>2018-07-24T15:00:00.000Z</published>
     <updated>2018-08-11T19:17:33.807Z</updated>
     
@@ -169,12 +169,12 @@
     
     </summary>
     
-      <category term="취업" scheme="http://yoursite.com/categories/%EC%B7%A8%EC%97%85/"/>
+      <category term="취업" scheme="http://ksw1652.github.io/categories/%EC%B7%A8%EC%97%85/"/>
     
     
-      <category term="이직" scheme="http://yoursite.com/tags/%EC%9D%B4%EC%A7%81/"/>
+      <category term="이직" scheme="http://ksw1652.github.io/tags/%EC%9D%B4%EC%A7%81/"/>
     
-      <category term="면접" scheme="http://yoursite.com/tags/%EB%A9%B4%EC%A0%91/"/>
+      <category term="면접" scheme="http://ksw1652.github.io/tags/%EB%A9%B4%EC%A0%91/"/>
     
   </entry>
   
