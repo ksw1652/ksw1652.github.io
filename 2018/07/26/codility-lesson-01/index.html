@@ -13,7 +13,7 @@
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="../../../../atom.xml">
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"gamjamanduu","sameAs":["https://github.com/ksw1652","https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/"],"image":"gamjamanduu.jpg"},"articleBody":"\nCodility Lesson 1 Iteration코딩테스트를 위해 오늘 부터 알고리즘 문제를 풀어보려 한다. 우선 Codility 사이트의 테스트 문제들을 풀어봤는데 생각보다 어렵다;;;테스트 문제는 완료하지도 못한채로 제출을 해버렸다..\n오늘부터 Codility 사이트의 Lession 문제들을 차근차근 풀어보려 한다. 더불어 예전에 조금 깨작? 거렸던 Cordwars도 풀어볼 것이다.개인적으로 알고리즘 문제를 풀 땐 연습장에 직접 써보면서 풀어가는데, 채용시 코테에서 연습장을 쓸 수 있을지는 의문이다. 이때문에 컴퓨터 상에서 풀어보는 연습도 필요하다.그리고 Codility의 경우 run task를 할 경우 테스트 케이스의 결과만 보여주기 때문에 내부에서 어떻게 돌아가는지 파악하기 어렵다…그래서 찾아낸 방법은 jsFiddle로 코드를 작성하면서 컴파일을 돌리고, 결과 코드를 복붙! 하면 좀 더 시간을 단축 시킬 수 있을 것 같다.오늘 부터 한 문제씩 업로드 하고 내가 풀었던 코드들도 같이 올릴 것이다.\n\n문제A binary gap within a positive integer N is any maximal sequence of consecutive zeros that is surrounded by ones at both ends in the binary representation of N.\nFor example, number 9 has binary representation 1001 and contains a binary gap of length 2. The number 529 has binary representation 1000010001 and contains two binary gaps: one of length 4 and one of length 3. The number 20 has binary representation 10100 and contains one binary gap of length 1. The number 15 has binary representation 1111 and has no binary gaps. The number 32 has binary representation 100000 and has no binary gaps.\nWrite a function:\nfunction solution(N);\nthat, given a positive integer N, returns the length of its longest binary gap. The function should return 0 if N doesn’t contain a binary gap.\nFor example, given N = 1041 the function should return 5, because N has binary representation 10000010001 and so its longest binary gap is of length 5. Given N = 32 the function should return 0, because N has binary representation ‘100000’ and thus no binary gaps.\nAssume that:\nN is an integer within the range [1..2,147,483,647].Complexity:\nexpected worst-case time complexity is O(log(N));expected worst-case space complexity is O(1).\n\n\n문제해설 : 주어진 Integer N이 있고, 이를 이진수로 변환하였을 때 1과 1사이의 0의 갯수를 gap이라 한다.예를 들어 9는 이진수로 1001이며 gap의 길이는 2가 된다.숫자 529의 경우 이진수로 1000010001이며 이 경우에는 gap이 4와 3이다.function solution(N);함수 solution에서 N이 파라미터로 주어졌을 때 가장 긴 gap값을 찾아라.단 gap이 존재하지 않을 경우 0을 리턴해야 한다. 예를들어 N = 32인 경우 이진수로 100000이며 이때의 gap은 0이다.N은 [1..2,147,483,647]의 범위 값을 가진다.복잡도 :최악의 시간 복잡도 케이스는 O(log(N)) 이다.최악의 공간 복잡도 케이스는 O(1) 이다.\njs123456789101112131415161718function solution(N) {  var binaryValue = (N &gt;&gt;&gt; 0).toString(2);  var innerCount = 0;  var gap = 0;  var i;  for(i=1; i&lt; binaryValue.length; i++) {    if(binaryValue[i] == 0) {      innerCount++;    } else {      if(innerCount &gt; gap) {\t      gap = innerCount;      }\t  innerCount = 0;    }  }  return gap;}\n답안 해설\n우선 주어진 값을 이진값으로 변환하기 위해 toString()을 사용하였다. 이때 인자로 들어간 ‘2’ 값은 optional인데 2일 경우 binary 문자열로 리턴해준다.\n이렇게 변환된 binary문자열은 (해당 문자열의 길이 - 1) 만큼 반복문을 돌게된다.\n각 인덱스 순서대로 값을 확인하면서, 값이 0일 경우, 반복되는 0의 갯수를 count하는innerCount라는 값이 증가하게 되고 1일 경우 현재의 innerCount와 이전의 gap을 비교하여 현재의 innerCount, 즉 새로 count 된 gap이 클경우 이를 gap에 할당한다.\n이후 innerCount는 초기화 되며 다시 gap을 찾기위해 count 한다.\n\n실행결과Lesson 1 Codility Result","dateCreated":"2018-07-26T00:00:00+09:00","dateModified":"2018-08-12T04:15:47+09:00","datePublished":"2018-07-26T00:00:00+09:00","description":"\nCodility 사이트의 lesson을 한 단계씩 풀어가면서 이에 대한 문제와 해설을 포스팅 하려 한다.","headline":"Codiliy Lesson 1 Iteration","image":["https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg","https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://ksw1652.github.io/2018/07/26/codility-lesson-01/"},"publisher":{"@type":"Organization","name":"gamjamanduu","sameAs":["https://github.com/ksw1652","https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/"],"image":"gamjamanduu.jpg","logo":{"@type":"ImageObject","url":"gamjamanduu.jpg"}},"url":"http://ksw1652.github.io/2018/07/26/codility-lesson-01/","keywords":"이직, 코딜리티, 코테","thumbnailUrl":"https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"}</script>
     <meta name="description" content="Codility 사이트의 lesson을 한 단계씩 풀어가면서 이에 대한 문제와 해설을 포스팅 하려 한다.">
@@ -35,7 +35,7 @@
         
     
     
-        <meta property="og:image" content="http://ksw1652.github.io/assets/images/gamjamanduu.jpg"/>
+        <meta property="og:image" content="http://ksw1652.github.io../../../../assets/images/gamjamanduu.jpg"/>
     
     
         <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"/>
@@ -47,7 +47,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-oxk3tfykkiugi4rpkcuzcokctsteicguqj1fmnmdhio6iaaajgvh7saxnid6.min.css">
+    <link rel="stylesheet" href="../../../../assets/css/style-oxk3tfykkiugi4rpkcuzcokctsteicguqj1fmnmdhio6iaaajgvh7saxnid6.min.css">
     <!--STYLES END-->
     
 
@@ -68,7 +68,7 @@
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
-        <a class="header-title-link" href="/ ">gamjamanduu의 블로그</a>
+        <a class="header-title-link" href="../../../../ ">gamjamanduu의 블로그</a>
     </div>
     
         
@@ -76,7 +76,7 @@
                 href="#about">
         
         
-            <img class="header-picture" src="/assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -93,8 +93,8 @@
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
-                <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+                <a href="../../../../#about">
+                    <img class="sidebar-profile-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
                 </a>
                 <h4 class="sidebar-profile-name">gamjamanduu</h4>
                 
@@ -109,7 +109,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="../../../../ "
                             
                             title="홈으로"
                         >
@@ -122,7 +122,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/all-categories"
+                             href="../../../../all-categories"
                             
                             title="카테고리"
                         >
@@ -135,7 +135,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/all-tags"
+                             href="../../../../all-tags"
                             
                             title="Tags"
                         >
@@ -148,7 +148,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/all-archives"
+                             href="../../../../all-archives"
                             
                             title="Archives"
                         >
@@ -200,7 +200,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/atom.xml"
+                             href="../../../../atom.xml"
                             
                             title="RSS"
                         >
@@ -248,7 +248,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/코딩테스트/">코딩테스트</a>
+    <a class="category-link" href="../../../../categories/코딩테스트/">코딩테스트</a>
 
 
     
@@ -293,7 +293,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/이직/">이직</a> <a class="tag tag--primary tag--small t-link" href="/tags/코딜리티/">코딜리티</a> <a class="tag tag--primary tag--small t-link" href="/tags/코테/">코테</a>
+    <a class="tag tag--primary tag--small t-link" href="../../../../tags/이직/">이직</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/코딜리티/">코딜리티</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/코테/">코테</a>
 
             </div>
         
@@ -304,7 +304,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/30/javascript-prototype/" data-tooltip="Javascript Prototype" aria-label="이전: Javascript Prototype">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../30/javascript-prototype/" data-tooltip="Javascript Prototype" aria-label="이전: Javascript Prototype">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">이전</span>
@@ -313,7 +313,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/25/blog-start/" data-tooltip="이직을 준비하면서" aria-label="다음: 이직을 준비하면서">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../25/blog-start/" data-tooltip="이직을 준비하면서" aria-label="다음: 이직을 준비하면서">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">다음</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -384,7 +384,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/30/javascript-prototype/" data-tooltip="Javascript Prototype" aria-label="이전: Javascript Prototype">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../30/javascript-prototype/" data-tooltip="Javascript Prototype" aria-label="이전: Javascript Prototype">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">이전</span>
@@ -393,7 +393,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/25/blog-start/" data-tooltip="이직을 준비하면서" aria-label="다음: 이직을 준비하면서">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../25/blog-start/" data-tooltip="이직을 준비하면서" aria-label="다음: 이직을 준비하면서">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">다음</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -467,7 +467,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
         
             <h4 id="about-card-name">gamjamanduu</h4>
         
@@ -494,9 +494,9 @@
 
         
         
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+<div id="cover" style="background-image:url('../../../../assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-4wq4hqm3z09cqhfsvsrq4bceh9bpkpqbrstf0dlqkpmuy5mtvktcq0dhxgkl.min.js"></script>
+<script src="../../../../assets/js/script-4wq4hqm3z09cqhfsvsrq4bceh9bpkpqbrstf0dlqkpmuy5mtvktcq0dhxgkl.min.js"></script>
 <!--SCRIPTS END-->
 
     
