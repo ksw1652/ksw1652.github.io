@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="gamjamanduu의 블로그">
+    <title>Front-End Interview Question - Normal Question - gamjamanduu의 블로그</title>
+    <meta name="author" content="gamjamanduu">
+    
+        <meta name="keywords" content="Engineering,Front-End,FE,FrontEnd,frontend,javascript,">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"gamjamanduu","sameAs":["https://github.com/","https://www.linkedin.com/profile/","mailto"],"image":"gamjamanduu.jpg"},"articleBody":"\n[프론트 엔드 면접은행]곧 있을 면접과 앞으로의 프론트엔드 면접을 위하여 프론트엔드 면접 문제 은행의 질문들을 개인적으로 정리하려 한다. 참조한 곳은 https://github.com/h5bp/Front-end-Developer-Interview-Questions 이곳이며, 한국어 버전이 번역되어 git에 올라가 있다. (https://github.com/h5bp/Front-end-Developer-Interview-Questions/tree/master/Translations/Korean#js-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8)\n일반적인 질문부터 HTML, CSS, Javascript에 대한 Front-End 전반적인 질문들에 대한 답을 적어보려 한다. 질문에 대한 답변은 계속해서 업데이트 할 예정이다.\n\n\n어제/이번 주에 무엇을 공부하셨나요?\n\n\n이번주에는 Javascript Prototype에 대하여 공부하고 정리하였습니다.Prototype에 대해 간단하게 설명하면 우리가 일반적으로 이야기 하는 Javascirpt Prototype은 Prototype Link와 Prototype Object로 구성되어 있으며, Prototype Link는 하위 객체가 참조하는 상위객체를 일컫고, Prototype Object는 자신을 복제할 하위 객체가 참조할 Object, 즉 분신입니다.\n\n\n코딩을 할 때 당신을 들뜨게 하거나 흥미를 끄는 것들은 무엇은 가요?\n\n\n새로운 기술과 이를 적용하여 프로젝트를 구현하고 눈으로 확인했을 때 가장 흥미를 느낍니다.\n\n\n최근에 당신이 경험한 기술적인 문제는 무엇이고 그것을 어떻게 해결했나요?\n\n\n가장 최근에 진행한 Vue.js로 구현한 빙고 페이지에서 페이지 렌더링을 하는 도중 에러가 발생하였습니다.에러가 발생한 이유는 데이터를 받아오는 시점에서 일반적인 RESTFul API가 아닌 Android Interface를 통해 데이터를 받아오기 때문에 시점에 대한 이슈가 발생하였습니다.이를 해결하기 위해 Javascript Event Dispatcher를 사용하여 데이터를 주고받았고, async / await를 사용하여 동기화처리를 함으로서 렌더링 이슈를 해결하였습니다.\n\n\n웹 애플리케이션이나 사이트를 만들 때 고려해야 할 UI, Security, Performance, SEO, Maintainability에 대해서 설명해주세요.\n\n\nUI : PC용 웹사이트와 모바일 사이트를 하나의 도메인에서 서비스하려면 반응형 디자인으로 페이지를 구현합니다. 또는 두개의 도메인을 구분하려면 PC용, Mobile용을 따로 디자인하여 퍼블리싱하면 됩니다.\n\nSecurity : 제가 진행했던 보안적인 처리는 SPA내에서 DOM에 직접적으로 접근하지 않고, 각 FE프레임워크 또는 라이브러리(Angular, React, Vue.js)에서 권장하는 방식으로 접근하는 것입니다. 두번 째 방법은 입력 폼 양식에 대하여 유효성 체크를 FrontEnd와 BackEnd 둘다 처리합니다. 이렇게 했을 때 invalild Data나 잘못된 파일이 업로드 되었을 때의 피해를 최소화 할 수 있습니다. 마지막으로 페이지에 대한 router를 auth처리하여 인증된 사용자만 접근할 수 있도록 구분하는 것입니다. 이렇게 하였을때 무분별하게 페이지접근이나 요청을 막을 수 있습니다.추가로 LocalStorage대신 sessionStorage를 사용하는 것도 좋은 방법입니다.\n\nPerformance : FrontEnd에서 성능향상을 위하여 기본적으로는 우선 style태그는 태그 내에, script태그는  최하단에 배치시키는 것입니다. 이렇게 하는 이유는 브라우저에의해 DOM이 생성되고 렌더링 되면서 우선적으로는 style이 적용되어야 하고, script는 마지막에 불려와 로직이 적용되어야 하기 때문입니다.두번째 방법은 FE프레임워크마다 다르겠지만 우선 Virtual DOM을 사용하는 것입니다. Angular의 경우 Virtual DOM을 기본스펙으로 제공하지 않기 때문에 페이지를 리플로우 / 리드로우 할때 체감상 상당히 느리게 느껴집니다. 그러나 Vue.js의 경우 Virtual Dom을 사용하기 때문에 리플로우 / 리드로우 시간을 최소화 할 수 있습니다. 마지막으로 프로젝트를 완료 후 빌드할 때에는 공통적으로 Uglify, Minify, Gzip 프로세스를 추가하여 브라우저에서 JS나 CSS를 로드할 때의 시간을 최소화하면 성능향상을 기대 할 수 있습니다.\n\nSEO : 검색엔진 최적화를 위하여 &lt;title&gt; 태그와 &lt;meta&gt; 태그들에 대한 정보를 모두 입력합니다.또한 Robot.txt를 사용합니다.&lt;a&gt; 태그를 사용합니다.\n\nMaintainability : 코드 컨벤션을 정의합니다. 이는 팀원들간의 유지보수을 쉽고 빠르게 유지할 수 있습니다. 간단하게는 네이밍 부터 HTML, CSS, Javascript까지 정의합니다. linter를 사용합니다. 여러 종류의 linter가 있지만 린터를 사용하였을 때 유지보수가 용이해지고 코트의 품질이 올라갑니다.\n\n\n\n선호하는 개발 환경에 대해 자유롭게 이야기해 주세요.\n\n\n기존 경력동안 사용한  OS는 MAC 이며 IDE는 WebStorm입니다.\n\n\n버전 관리 시스템은 어떤 것들을 사용해보셨습니까?\n\n\ngit과 BitBucket를 주로 사용하였습니다.\n\n\n당신이 웹 페이지를 만들 때의 과정을 설명해주실 수 있을까요?\n\n\n기획과 디자인이 모두 완료된 상태에서 첫 작업은 퍼블리싱입니다. 퍼블리싱을 작업하여 반응형일 경우 모바일과 PC버전의 화면을 체크하고 MockData를 삽입하여 실제 데이터가 표시 된 것처럼 작업합니다. 이후 로직단을 작업하여 RESTFul API를 통해 데이터를 가져오거나 추가 로직을 입힙니다. 이후 UI와 로직 모두 테스팅을 진행하며 시나리오 대로 페이지가 동작하는지 확인합니다.\n\n\n당신에게 5가지 다른 stylesheet가 있습니다. 어떤 방법으로 사이트에 제공하는 게 가장 효과적일까요?\n\n\n(질문자의 의도를 모르겠음)사용자 분석을기반으로 각각 다른 스타일을 제공하면 좋을 것 같습니다.\n\n\n점진적 향상법(progressive enhancement)과 우아한 성능저하법(graceful degradation)의 차이를 설명하실 수 있습니까?\n\n\n점진적 향상법은 많은 테스팅을 통해 기능을 점진적으로 향상시키는 것을 의미하며 우아한 성능저하법은 최신기기에서 동작하는 기능을 만들고 난 다음에 오래된 기기에서 동작할 수 있도록 다른 버전을 두어 관리 또는 만드는 것을 의미합니다.\n\n\n브라우저가 한 번에 1개의 도메인에서 내려받는 자원은 몇 개인가요?\n\n\n이번 질문을 보고 공부하게된 내용입니다.브라우저마다 다르겠지만 평균 6~8개의 리소스를 동시에 받을 수 있습니다.\n\n\n페이지 로드 시간을 줄이는 세 가지 방법에 관해서 이야기 해 보세요.\n\n\ncss Image Spirte를 사용합니다. 또한 js 파일을 minify, uglify하여 하나의 파일로 로드합니다. gzip을 사용합니다. 캐싱을 적용합니다.\n\n\n당신이 프로젝트에 합류했습니다. 근데 그들은 Tab을 이용하고, 당신은 Space를 사용했습니다. 어떻게 하실 건가요?\n\n\n팀의 코드 컨벤션을 유지합니다. 제가 우선시하는 것은 개인적인 성향보다는 팀원들간의 커뮤니케이션이고 다른 사람의 코드를 볼때 빠른 이해가 중요합니다. 이를 위해 Tab이 서로간에 코드를 이해하는 것이 빠르다면 Tab을 사용할 것입니다. 어차피 빌드되면 다 똑같이 때문에 퍼포먼스와 같은 결과는 크게 차이나지 않을 것입니다.\n\n\n간단한 Slideshow 페이지를 만드는 방법에 관해서 이야기해 보세요.\n\n\nposition: absolute; left: width; 를 기반으로 모든 페이지를 좌측으로 정렬 시키고, 자바스크립트로 left 값을 변경하는 식.직접 스타일을 조작하는데 리플로우, 리드로우와 같이 퍼포먼스 문제가 있다면 CSS3 transform을 사용합니다.\n\n\n만약 당신이 올해 기술적 책임자가 되었다면 무엇을 먼저 하시겠습니까?\n\n\n팀내의 코드컨벤션을 정의 하겠습니다. 서로간의 코드를 이해하기 쉽고 유지보수가 용이해지도록 하기 위해서 입니다. 또한 페어 프로그래밍을 시도해 보고 싶습니다. 페어프로그래밍을 도입함으로서 코드를 작성한 개발자에게 모든 책임을 전가하는 것이 아닌 위급한 상황에서도 누구나 코드를 수정할 수 있도록 해야 합니다.\n\n\n표준의 중요성에 관해 설명해주세요.\n\n\n표준을 정의함으로서 팀원들 간에는 서로의 코드를 이해하고 수정하는 시간을 줄일 수 있다. 또한 코드를 작성한 개발자가 사정이 생기더라도 표준에의한 코딩을 함으로서 쉽게 다른 개발자가 코딩을 할 수 있게한다.\n\n\nFlash of Unstyled Content에 관해 설명해주세요. 또 FOUC를 피하기 위해선 어떻게 해야 하나요?\n\n\n기본적으로 CSS는 렌더링 차단 리소스로 취급된다. 즉 CSSOM이 생성될 때까지 브라우저는 처리되는 모든 콘텐츠를 로딩하지 않는다. 예를 들어 @import(참조된 CSS)를 사용하거나 자바스크립트로 인한 DOM 구조가 변결될때 FOUC가 발생한다.이를 해결하기 위해 기본적으로는 태그 안에 CSS를 링크하고 @import사용을 자제한다. 또한 자바스크립트의 순서를 바꿔주거나 특정 상황에서 FOUC가 발생하는 경우 미디어쿼리를 통해 처리 할 수 있다. (결론 : 클라이언트에서 최대한 빠르게 CSS를 다운로드하여 렌더링 해야함)\n\n\nARIA와 screenreader에 대해 설명해주세요\n\n\nARIA는 (Accessible Rich Internet Applications) 즉 웹 어플리케이션을 작성할 때 장애인을 위한 접근성 향상 방법을 정의한것.screenreader는 시각장애인이 컴퓨터를 사용할 때 나타나는 정보들을 음성으로 출력해주는 프로그램이다.\n\n\nCSS 애니메이션과 JavaScript 애니메이션의 차이점에 관해 설명해주세요\n\n\nUI 요소 상태 전환과 같은 간단한 ‘원샷(one-shot)’ 전환에 CSS 애니메이션을 사용합니다. 바운스, 중지, 일시 중지, 되감기 또는 감속과 같은 고급 효과를 원할 경우에 자바스크립트 애니메이션을 사용합니다.자바스크립트로 애니메이션을 만드는 경우, 자신에게 익숙한 Web Animations API 또는 최신 프레임워크를 사용합니다.\n\n\nCORS는 무엇의 약자이고 어떤 문제에 대해서 언급하는 것인가요?\n\n\nCORS는 Cross Origin Resource Sharing으로 다른 도메인에서 리소스를 공유할 수 있음을 의미한다. 기본적으로 스크립트는 Same Origin Policy에 의해 HTTP Request가 불가능하나 CORS를 허용하게 된다면 다른 도메인으로 HTTP Request가 가능해진다는 뜻이다. 이를 해결하기 위해선 여러가지 방법이 있는데, JSONP방식을 사용하거나 서버측에서 Access control을 허용하도록 설정해주면 된다.\n","dateCreated":"2018-07-31T10:14:00+09:00","dateModified":"2018-08-12T01:38:38+09:00","datePublished":"2018-07-31T10:14:00+09:00","description":"\n곧 있을 면접과 앞으로의 프론트엔드 면접을 위하여 프론트엔드 면접 문제 은행의 질문들을 개인적으로 정리하려 한다.","headline":"Front-End Interview Question - Normal Question","image":["https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg","https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2018/07/31/front-end-interview-nomal-question/"},"publisher":{"@type":"Organization","name":"gamjamanduu","sameAs":["https://github.com/","https://www.linkedin.com/profile/","mailto"],"image":"gamjamanduu.jpg","logo":{"@type":"ImageObject","url":"gamjamanduu.jpg"}},"url":"http://yoursite.com/2018/07/31/front-end-interview-nomal-question/","keywords":"FrontEnd, Interview, Question","thumbnailUrl":"https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg"}</script>
+    <meta name="description" content="곧 있을 면접과 앞으로의 프론트엔드 면접을 위하여 프론트엔드 면접 문제 은행의 질문들을 개인적으로 정리하려 한다.">
+<meta name="keywords" content="FrontEnd,Interview,Question">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Front-End Interview Question - Normal Question">
+<meta property="og:url" content="http://yoursite.com/2018/07/31/front-end-interview-nomal-question/index.html">
+<meta property="og:site_name" content="gamjamanduu의 블로그">
+<meta property="og:description" content="곧 있을 면접과 앞으로의 프론트엔드 면접을 위하여 프론트엔드 면접 문제 은행의 질문들을 개인적으로 정리하려 한다.">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2018-08-11T16:38:38.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Front-End Interview Question - Normal Question">
+<meta name="twitter:description" content="곧 있을 면접과 앞으로의 프론트엔드 면접을 위하여 프론트엔드 면접 문제 은행의 질문들을 개인적으로 정리하려 한다.">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/gamjamanduu.jpg"/>
+    
+    
+        <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg" />
+    
+    
+        <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">gamjamanduu의 블로그</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">gamjamanduu</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>gamjamanduu</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="홈으로"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">홈으로</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="카테고리"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">카테고리</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/mailto"
+                            title="Mail"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/frontend-img.jpg');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Front-End Interview Question - Normal Question
+        </h1>
+    
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt --></p>
+<h1 id="프론트-엔드-면접은행"><a href="#프론트-엔드-면접은행" class="headerlink" title="[프론트 엔드 면접은행]"></a>[프론트 엔드 면접은행]</h1><p>곧 있을 면접과 앞으로의 프론트엔드 면접을 위하여 <strong>프론트엔드 면접 문제 은행</strong>의 질문들을 개인적으로 정리하려 한다. <br><br>참조한 곳은 <a href="https://github.com/h5bp/Front-end-Developer-Interview-Questions" target="_blank" rel="noopener">https://github.com/h5bp/Front-end-Developer-Interview-Questions</a> 이곳이며, 한국어 버전이 번역되어 git에 올라가 있다. <br><br>(<a href="https://github.com/h5bp/Front-end-Developer-Interview-Questions/tree/master/Translations/Korean#js-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8" target="_blank" rel="noopener">https://github.com/h5bp/Front-end-Developer-Interview-Questions/tree/master/Translations/Korean#js-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8</a>)</p>
+<p>일반적인 질문부터 HTML, CSS, Javascript에 대한 Front-End 전반적인 질문들에 대한 답을 적어보려 한다. 질문에 대한 답변은 계속해서 업데이트 할 예정이다.<br></p>
+<hr>
+<blockquote>
+<p><strong>어제/이번 주에 무엇을 공부하셨나요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>이번주에는 Javascript Prototype에 대하여 공부하고 정리하였습니다.<br><br>Prototype에 대해 간단하게 설명하면 우리가 일반적으로 이야기 하는 Javascirpt Prototype은 Prototype Link와 Prototype Object로 구성되어 있으며, Prototype Link는 하위 객체가 참조하는 상위객체를 일컫고, Prototype Object는 자신을 복제할 하위 객체가 참조할 Object, 즉 분신입니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>코딩을 할 때 당신을 들뜨게 하거나 흥미를 끄는 것들은 무엇은 가요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>새로운 기술과 이를 적용하여 프로젝트를 구현하고 눈으로 확인했을 때 가장 흥미를 느낍니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>최근에 당신이 경험한 기술적인 문제는 무엇이고 그것을 어떻게 해결했나요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>가장 최근에 진행한 Vue.js로 구현한 빙고 페이지에서 페이지 렌더링을 하는 도중 에러가 발생하였습니다.<br><br>에러가 발생한 이유는 데이터를 받아오는 시점에서 일반적인 RESTFul API가 아닌 Android Interface를 통해 데이터를 받아오기 때문에 시점에 대한 이슈가 발생하였습니다.<br><br>이를 해결하기 위해 Javascript Event Dispatcher를 사용하여 데이터를 주고받았고, async / await를 사용하여 동기화처리를 함으로서 렌더링 이슈를 해결하였습니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>웹 애플리케이션이나 사이트를 만들 때 고려해야 할 UI, Security, Performance, SEO, Maintainability에 대해서 설명해주세요.</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>UI : PC용 웹사이트와 모바일 사이트를 하나의 도메인에서 서비스하려면 반응형 디자인으로 페이지를 구현합니다. 또는 두개의 도메인을 구분하려면 PC용, Mobile용을 따로 디자인하여 퍼블리싱하면 됩니다.<br></strong></p>
+</li>
+<li><p><strong>Security : 제가 진행했던 보안적인 처리는 SPA내에서 DOM에 직접적으로 접근하지 않고, 각 FE프레임워크 또는 라이브러리(Angular, React, Vue.js)에서 권장하는 방식으로 접근하는 것입니다. <br><br>두번 째 방법은 입력 폼 양식에 대하여 유효성 체크를 FrontEnd와 BackEnd 둘다 처리합니다. 이렇게 했을 때 invalild Data나 잘못된 파일이 업로드 되었을 때의 피해를 최소화 할 수 있습니다. <br><br>마지막으로 페이지에 대한 router를 auth처리하여 인증된 사용자만 접근할 수 있도록 구분하는 것입니다. 이렇게 하였을때 무분별하게 페이지접근이나 요청을 막을 수 있습니다.<br><br>추가로 LocalStorage대신 sessionStorage를 사용하는 것도 좋은 방법입니다.<br></strong></p>
+</li>
+<li><p><strong>Performance : FrontEnd에서 성능향상을 위하여 기본적으로는 우선 style태그는 <head>태그 내에, script태그는 </head><body> 최하단에 배치시키는 것입니다. 이렇게 하는 이유는 브라우저에의해 DOM이 생성되고 렌더링 되면서 우선적으로는 style이 적용되어야 하고, script는 마지막에 불려와 로직이 적용되어야 하기 때문입니다.<br><br>두번째 방법은 FE프레임워크마다 다르겠지만 우선 Virtual DOM을 사용하는 것입니다. Angular의 경우 Virtual DOM을 기본스펙으로 제공하지 않기 때문에 페이지를 리플로우 / 리드로우 할때 체감상 상당히 느리게 느껴집니다. 그러나 Vue.js의 경우 Virtual Dom을 사용하기 때문에 리플로우 / 리드로우 시간을 최소화 할 수 있습니다. <br><br>마지막으로 프로젝트를 완료 후 빌드할 때에는 공통적으로 Uglify, Minify, Gzip 프로세스를 추가하여 브라우저에서 JS나 CSS를 로드할 때의 시간을 최소화하면 성능향상을 기대 할 수 있습니다.<br></body></strong></p>
+</li>
+<li><p><strong>SEO : 검색엔진 최적화를 위하여 <code>&lt;title&gt;</code> 태그와 <code>&lt;meta&gt;</code> 태그들에 대한 정보를 모두 입력합니다.<br><br>또한 Robot.txt를 사용합니다.<br><br><code>&lt;a&gt;</code> 태그를 사용합니다.</strong></p>
+</li>
+<li><p><strong>Maintainability : 코드 컨벤션을 정의합니다. 이는 팀원들간의 유지보수을 쉽고 빠르게 유지할 수 있습니다. 간단하게는 네이밍 부터 HTML, CSS, Javascript까지 정의합니다. linter를 사용합니다. 여러 종류의 linter가 있지만 린터를 사용하였을 때 유지보수가 용이해지고 코트의 품질이 올라갑니다.</strong></p>
+</li>
+</ul>
+<blockquote>
+<p><strong>선호하는 개발 환경에 대해 자유롭게 이야기해 주세요.</strong></p>
+</blockquote>
+<ul>
+<li><strong>기존 경력동안 사용한  OS는 MAC 이며 IDE는 WebStorm입니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>버전 관리 시스템은 어떤 것들을 사용해보셨습니까?</strong></p>
+</blockquote>
+<ul>
+<li><strong>git과 BitBucket를 주로 사용하였습니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>당신이 웹 페이지를 만들 때의 과정을 설명해주실 수 있을까요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>기획과 디자인이 모두 완료된 상태에서 첫 작업은 퍼블리싱입니다. 퍼블리싱을 작업하여 반응형일 경우 모바일과 PC버전의 화면을 체크하고 MockData를 삽입하여 실제 데이터가 표시 된 것처럼 작업합니다. 이후 로직단을 작업하여 RESTFul API를 통해 데이터를 가져오거나 추가 로직을 입힙니다. 이후 UI와 로직 모두 테스팅을 진행하며 시나리오 대로 페이지가 동작하는지 확인합니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>당신에게 5가지 다른 stylesheet가 있습니다. 어떤 방법으로 사이트에 제공하는 게 가장 효과적일까요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>(질문자의 의도를 모르겠음)<br><br>사용자 분석을기반으로 각각 다른 스타일을 제공하면 좋을 것 같습니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>점진적 향상법(progressive enhancement)과 우아한 성능저하법(graceful degradation)의 차이를 설명하실 수 있습니까?</strong></p>
+</blockquote>
+<ul>
+<li><strong>점진적 향상법은 많은 테스팅을 통해 기능을 점진적으로 향상시키는 것을 의미하며 우아한 성능저하법은 최신기기에서 동작하는 기능을 만들고 난 다음에 오래된 기기에서 동작할 수 있도록 다른 버전을 두어 관리 또는 만드는 것을 의미합니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>브라우저가 한 번에 1개의 도메인에서 내려받는 자원은 몇 개인가요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>이번 질문을 보고 공부하게된 내용입니다.<br>브라우저마다 다르겠지만 평균 6~8개의 리소스를 동시에 받을 수 있습니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>페이지 로드 시간을 줄이는 세 가지 방법에 관해서 이야기 해 보세요.</strong></p>
+</blockquote>
+<ul>
+<li><strong>css Image Spirte를 사용합니다. 또한 js 파일을 minify, uglify하여 하나의 파일로 로드합니다. gzip을 사용합니다. 캐싱을 적용합니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>당신이 프로젝트에 합류했습니다. 근데 그들은 Tab을 이용하고, 당신은 Space를 사용했습니다. 어떻게 하실 건가요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>팀의 코드 컨벤션을 유지합니다. 제가 우선시하는 것은 개인적인 성향보다는 팀원들간의 커뮤니케이션이고 다른 사람의 코드를 볼때 빠른 이해가 중요합니다. 이를 위해 Tab이 서로간에 코드를 이해하는 것이 빠르다면 Tab을 사용할 것입니다. 어차피 빌드되면 다 똑같이 때문에 퍼포먼스와 같은 결과는 크게 차이나지 않을 것입니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>간단한 Slideshow 페이지를 만드는 방법에 관해서 이야기해 보세요.</strong></p>
+</blockquote>
+<ul>
+<li><strong>position: absolute; left: width; 를 기반으로 모든 페이지를 좌측으로 정렬 시키고, 자바스크립트로 left 값을 변경하는 식.<br>직접 스타일을 조작하는데 리플로우, 리드로우와 같이 퍼포먼스 문제가 있다면 CSS3 transform을 사용합니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>만약 당신이 올해 기술적 책임자가 되었다면 무엇을 먼저 하시겠습니까?</strong></p>
+</blockquote>
+<ul>
+<li><strong>팀내의 코드컨벤션을 정의 하겠습니다. 서로간의 코드를 이해하기 쉽고 유지보수가 용이해지도록 하기 위해서 입니다. 또한 페어 프로그래밍을 시도해 보고 싶습니다. 페어프로그래밍을 도입함으로서 코드를 작성한 개발자에게 모든 책임을 전가하는 것이 아닌 위급한 상황에서도 누구나 코드를 수정할 수 있도록 해야 합니다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>표준의 중요성에 관해 설명해주세요.</strong></p>
+</blockquote>
+<ul>
+<li><strong>표준을 정의함으로서 팀원들 간에는 서로의 코드를 이해하고 수정하는 시간을 줄일 수 있다. 또한 코드를 작성한 개발자가 사정이 생기더라도 표준에의한 코딩을 함으로서 쉽게 다른 개발자가 코딩을 할 수 있게한다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>Flash of Unstyled Content에 관해 설명해주세요. 또 FOUC를 피하기 위해선 어떻게 해야 하나요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>기본적으로 CSS는 렌더링 차단 리소스로 취급된다. 즉 CSSOM이 생성될 때까지 브라우저는 처리되는 모든 콘텐츠를 로딩하지 않는다. 예를 들어 @import(참조된 CSS)를 사용하거나 자바스크립트로 인한 DOM 구조가 변결될때 FOUC가 발생한다.<br><br>이를 해결하기 위해 기본적으로는 <head>태그 안에 CSS를 링크하고 @import사용을 자제한다. 또한 자바스크립트의 순서를 바꿔주거나 특정 상황에서 FOUC가 발생하는 경우 미디어쿼리를 통해 처리 할 수 있다. (결론 : 클라이언트에서 최대한 빠르게 CSS를 다운로드하여 렌더링 해야함)</head></strong></li>
+</ul>
+<blockquote>
+<p><strong>ARIA와 screenreader에 대해 설명해주세요</strong></p>
+</blockquote>
+<ul>
+<li><strong>ARIA는 (Accessible Rich Internet Applications) 즉 웹 어플리케이션을 작성할 때 장애인을 위한 접근성 향상 방법을 정의한것.<br><br>screenreader는 시각장애인이 컴퓨터를 사용할 때 나타나는 정보들을 음성으로 출력해주는 프로그램이다.</strong></li>
+</ul>
+<blockquote>
+<p><strong>CSS 애니메이션과 JavaScript 애니메이션의 차이점에 관해 설명해주세요</strong></p>
+</blockquote>
+<ul>
+<li><strong>UI 요소 상태 전환과 같은 간단한 ‘원샷(one-shot)’ 전환에 CSS 애니메이션을 사용합니다. <br><br>바운스, 중지, 일시 중지, 되감기 또는 감속과 같은 고급 효과를 원할 경우에 자바스크립트 애니메이션을 사용합니다.<br><br>자바스크립트로 애니메이션을 만드는 경우, 자신에게 익숙한 Web Animations API 또는 최신 프레임워크를 사용합니다.<br></strong></li>
+</ul>
+<blockquote>
+<p><strong>CORS는 무엇의 약자이고 어떤 문제에 대해서 언급하는 것인가요?</strong></p>
+</blockquote>
+<ul>
+<li><strong>CORS는 Cross Origin Resource Sharing으로 다른 도메인에서 리소스를 공유할 수 있음을 의미한다. 기본적으로 스크립트는 Same Origin Policy에 의해 HTTP Request가 불가능하나 CORS를 허용하게 된다면 다른 도메인으로 HTTP Request가 가능해진다는 뜻이다. 이를 해결하기 위해선 여러가지 방법이 있는데, JSONP방식을 사용하거나 서버측에서 Access control을 허용하도록 설정해주면 된다.</strong></li>
+</ul>
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/FrontEnd/">FrontEnd</a> <a class="tag tag--primary tag--small t-link" href="/tags/Interview/">Interview</a> <a class="tag tag--primary tag--small t-link" href="/tags/Question/">Question</a>
+
+            </div>
+        
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 gamjamanduu. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">gamjamanduu</h4>
+        
+            <div id="about-card-bio"><p>gamjamanduu</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Front-End Web Engineer</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'http://yoursite.com/2018/07/31/front-end-interview-nomal-question/';
+                 
+                    this.page.identifier = '2018/07/31/front-end-interview-nomal-question/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'gamjamanduu';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
