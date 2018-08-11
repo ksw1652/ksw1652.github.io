@@ -928,6 +928,12 @@ li.fancybox-thumbs-loading {
   font-weight: 700;
   src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url(https://fonts.gstatic.com/s/merriweather/v8/EYh7Vl4ywhowqULgRdYwII1kRdeHIFWYEsp6A2f99b0.ttf) format("truetype"); }
 
+@font-face {
+  font-family: 'Nanum Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css); }
+
 html {
   font-family: "Open Sans", sans-serif;
   font-size: 10px;
@@ -1064,7 +1070,7 @@ abbr {
 blockquote {
   border-left: 3px solid #5d686f;
   padding: 0 15px;
-  font-style: italic;
+  font-style: normal;
   margin: 1.5em 0 0; }
   blockquote cite:before {
     content: ' — ';
@@ -2333,7 +2339,7 @@ blockquote {
 
 .caption {
   display: block;
-  font-family: "Merriweather", serif;
+  font-family: "Nanum Gothic";
   font-size: 1.3rem;
   color: #81929d;
   text-align: center;
@@ -2800,7 +2806,7 @@ a.fancybox {
   .post .post-content {
     text-rendering: optimizelegibility;
     letter-spacing: -0.3px;
-    font-family: "Merriweather", serif;
+    font-family: "Nanum Gothic";
     color: #5d686f;
     margin-top: 20px;
     font-weight: 400;
@@ -3086,7 +3092,7 @@ a.fancybox {
   .postShorten .postShorten-content {
     text-rendering: optimizelegibility;
     letter-spacing: -0.3px;
-    font-family: "Merriweather", serif;
+    font-family: "Nanum Gothic";
     color: #5d686f;
     font-weight: 400;
     overflow: hidden;
