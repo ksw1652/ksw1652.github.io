@@ -221,6 +221,14 @@ blockquote {
   h6 {
     font-size: 1.45rem; } }
 
+::selection {
+  background: #ffb7b7;
+  /* WebKit/Blink Browsers */ }
+
+::-moz-selection {
+  background: #ffb7b7;
+  /* Gecko Browsers */ }
+
 #about {
   display: none;
   position: fixed;
@@ -534,6 +542,7 @@ blockquote {
 
 #main {
   display: block;
+  opacity: 0.95;
   min-height: 100%;
   background: #fff;
   transition: transform .25s ease-in-out;
@@ -724,7 +733,8 @@ blockquote {
           width: auto;
           height: 35px;
           line-height: 35px;
-          font-size: 1.5rem;
+          font-size: 1.6rem;
+          font-weight: 900;
           letter-spacing: 0.3px;
           vertical-align: middle;
           color: #ffffff; }
@@ -836,7 +846,8 @@ blockquote {
           width: auto;
           height: 35px;
           line-height: 35px;
-          font-size: 1.5rem;
+          font-size: 1.6rem;
+          font-weight: 900;
           letter-spacing: 0.3px;
           vertical-align: middle;
           color: #ffffff; }
@@ -915,7 +926,8 @@ blockquote {
           width: auto;
           height: 35px;
           line-height: 35px;
-          font-size: 1.5rem;
+          font-size: 1.6rem;
+          font-weight: 900;
           letter-spacing: 0.3px;
           vertical-align: middle;
           color: #ffffff; }
@@ -992,7 +1004,8 @@ blockquote {
           width: auto;
           height: 35px;
           line-height: 35px;
-          font-size: 1.5rem;
+          font-size: 1.6rem;
+          font-weight: 900;
           letter-spacing: 0.3px;
           vertical-align: middle;
           color: #ffffff; }
@@ -1095,7 +1108,8 @@ blockquote {
             width: auto;
             height: 35px;
             line-height: 35px;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 900;
             letter-spacing: 0.3px;
             vertical-align: middle;
             overflow: hidden;
@@ -1144,7 +1158,8 @@ blockquote {
           width: auto;
           height: 35px;
           line-height: 35px;
-          font-size: 1.5rem;
+          font-size: 1.6rem;
+          font-weight: 900;
           letter-spacing: 0.3px;
           vertical-align: middle;
           color: #ffffff; }
@@ -1245,7 +1260,8 @@ blockquote {
             width: auto;
             height: 35px;
             line-height: 35px;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 900;
             letter-spacing: 0.3px;
             vertical-align: middle;
             overflow: hidden;
@@ -1295,7 +1311,8 @@ blockquote {
           width: auto;
           height: 35px;
           line-height: 35px;
-          font-size: 1.5rem;
+          font-size: 1.6rem;
+          font-weight: 900;
           letter-spacing: 0.3px;
           vertical-align: middle;
           color: #ffffff; }
