@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="gamjamanduu의 블로그">
+    <title>codility-lesson-02-OddOccurrencesInArray - gamjamanduu의 블로그</title>
+    <meta name="author" content="gamjamanduu">
+    
+        <meta name="keywords" content="Engineering,Front-End,FE,FrontEnd,frontend,javascript,">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="../../../../atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"gamjamanduu","sameAs":["https://github.com/ksw1652","https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/"],"image":"gamjamanduu.jpg"},"articleBody":"\n\n문제A non-empty array A consisting of N integers is given. The array contains an odd number of elements,\nand each element of the array can be paired with another element that has the same value, except for one element that is left unpaired.\nFor example, in array A such that:\n  A[0] = 9  A[1] = 3  A[2] = 9  A[3] = 3  A[4] = 9  A[5] = 7  A[6] = 9the elements at indexes 0 and 2 have value 9,the elements at indexes 1 and 3 have value 3,the elements at indexes 4 and 6 have value 9,the element at index 5 has value 7 and is unpaired.Write a function:\nfunction solution(A);\nthat, given an array A consisting of N integers fulfilling the above conditions, returns the value of the unpaired element.\nFor example, given array A such that:\n  A[0] = 9  A[1] = 3  A[2] = 9  A[3] = 3  A[4] = 9  A[5] = 7  A[6] = 9the function should return 7, as explained in the example above.\nWrite an efficient algorithm for the following assumptions:\nN is an odd integer within the range [1..1,000,000];each element of array A is an integer within the range [1..1,000,000,000];all but one of the values in A occur an even number of times.\n\n\n문제해설 : 비어있지 않은 배열 A는 integers N으로 구성되어 있습니다.\n배열은 홀수 개의 요소가 포함되어 있으며, 각 요소는 한개의 요소를 제외하고, 다른 요소와 같은 값으로서 쌍을 이룰 수 있습니다.\n예를 들어 배열 A는 다음과 같습니다.\nA[0] = 9A[1] = 3A[2] = 9A[3] = 3A[4] = 9A[5] = 7A[6] = 9\n인덱스 0과 2의 값은 3 입니다.인덱스 4와 6의 값은 9 입니다.인덱스 5의 값은 7이며 쌍을 이루지 않습니다.\n다음 solution(A) 함수를 작성하세요.\n위 조건을 만족하는 N integers로 구성된 배열 A는 쌍을 이루지 않는 값을 리턴합니다.\n예를 들면 주어진 배열 A는\nA[0] = 9A[1] = 3A[2] = 9A[3] = 3A[4] = 9A[5] = 7A[6] = 9\n위 설명대로라면 7을 리턴합니다.\n다음 가정을 토대로 효율적인 알고리즘을 작성하세요.\n\nN은 [1…1,000,000]의 범위를 가진 홀수 입니다.\n배열 A의 각 요소는 [1..1,000,000,000]의 범위를 가집니다.\nA의 값 중 하나를 제외하고 모두 짝수 번 발생합니다.\n\n\n답안 해설내가 작성한 코드 :\njs123456789101112131415161718192021222324function solution(A) {    var arr = [];    for(var i=0; i &lt; A.length; i++) {        var foundVal = arr.find(item =&gt; {            return item.value === A[i];        });        if(foundVal == undefined) {            arr.push({                value: A[i],                count: 1            });        } else {            foundVal.count++;        }    }    var result = arr.find(item =&gt; {        return item.count % 2 !== 0    });    return result.value;}\n내가 생각한 접근법은 배열을 새로 만들고 각 배열의 요소에 대한 count를 저장한다.배열 A를 순회하면서 중복되는 값의 count는 증가할 것이고 배열 A를 전부 순회하였을 때, 2로 나눠지지 않는 값을 찾는다.시간 복잡도는 배열 A를 순회하면서 이에 매칭되는 값을 저장하는 arr도 순회해야 하기 때문에 O(N^2)가 된다.\nP.S 상당히 고민 끝에 푼 테스트였는데 결과도 좋지 않아 현타가 왔다.\nTest Score는 66%였으며 Performance tests에서 medium, big1, big2에서 Timeout error가 났다.\n\n\n도대체 어떻게 효율적으로 짤 수 있을까 생각하다 결국엔 답을 찾아보았다.답을 찾아보고 난후 더욱 맨붕이 심하게 왔다…봐도 이해가 가지 않았기 때문…\n이 문제에 대한 최적의 알고리즘은 다음과 같다.\njs123456789function solution(A) {    var result = 0;    for(var item of A) {        result ^= item;    }    return result;}\n(코드가 어찌 이리 간단하면서도 이해가 가지 않을 수가 있지??!?)(저기서 XOR연산을 왜 하는거지??)결론은 간단했다. XOR (배타적 논리합: XOR연산은 두 개의 비트 값이 다르면 1, 같으면 0을 돌려준다) 연산의 특성 때문에 자체적으로 쌍을 이루지 않는 값은 필터링이 된다.XOR연산은 다음과 같은 특성을 가진다.\n\nX^0 = X\nX ^ X = 0\n\n즉 같은 값을 XOR연산을 한다면 그 값은 0이 되며 0과 X의 XOR 연산은 자기 자신이 된다.\n예를 들어 3^0의 경우\n123400000011----0011\n본인과 같은 3이 되고,\n123400110011----0000\n둘다 같은 비트이기 때문에 0이 된다.\n즉 위 문제의 배열 A에서 1개의 요소만 쌍을 이루지 않고 나머지는 모두 같은 값이므로\nA[0]^A[1]^A[2]….A[N-1]^A[N] 이 되며쌍을 이루는 값들은 XOR연산에 의해 0으로,쌍을 이루지 못한 요소는 그대로 남게되어0^A[X] = A[X] 가 된다.결국 쌍을 이루지 못한 값만 남게 되는것이다.\n결론: 세상에 천재는 많고 발끝 만치라도 따라 갈 수 있게 좀 더 연습이 필요하다.\n출처 : Solution to Odd-Occurrences-In-Array by codility","dateCreated":"2018-10-10T18:49:53+09:00","dateModified":"2018-10-10T21:26:46+09:00","datePublished":"2018-10-10T18:49:53+09:00","description":"\nCodility의 두 번째 lesson의 두번째 문제. OddOccurrencesInArray","headline":"codility-lesson-02-OddOccurrencesInArray","image":["https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg","https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/"},"publisher":{"@type":"Organization","name":"gamjamanduu","sameAs":["https://github.com/ksw1652","https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/"],"image":"gamjamanduu.jpg","logo":{"@type":"ImageObject","url":"gamjamanduu.jpg"}},"url":"http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/","keywords":"이직, 코딜리티, 코테","thumbnailUrl":"https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"}</script>
+    <meta name="description" content="Codility의 두 번째 lesson의 두번째 문제. OddOccurrencesInArray">
+<meta name="keywords" content="이직,코딜리티,코테">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="codility-lesson-02-OddOccurrencesInArray">
+<meta property="og:url" content="http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/index.html">
+<meta property="og:site_name" content="gamjamanduu의 블로그">
+<meta property="og:description" content="Codility의 두 번째 lesson의 두번째 문제. OddOccurrencesInArray">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/codility-oddoccurrences-01.png">
+<meta property="og:image" content="http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/codility-oddoccurrences-02.png">
+<meta property="og:updated_time" content="2018-10-10T12:26:46.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="codility-lesson-02-OddOccurrencesInArray">
+<meta name="twitter:description" content="Codility의 두 번째 lesson의 두번째 문제. OddOccurrencesInArray">
+<meta name="twitter:image" content="http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/codility-oddoccurrences-01.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://ksw1652.github.io../../../../assets/images/gamjamanduu.jpg"/>
+    
+    
+        <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg" />
+    
+    
+        <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="../../../../assets/css/style-4u8lztmshhyzusbvjv1z5orhacxhtysipqv8sfzubxcuoohfm1tce8lbioto.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-123793799-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="../../../../ ">gamjamanduu의 블로그</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="../../../../#about">
+                    <img class="sidebar-profile-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">gamjamanduu</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>웹을 사랑하는 Front-End 개발자입니다.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../ "
+                            
+                            title="홈으로"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">홈으로</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../all-categories"
+                            
+                            title="카테고리"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">카테고리</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/ksw1652" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/code_testing.jpg');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            codility-lesson-02-OddOccurrencesInArray
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-10-10T18:49:53+09:00">
+	
+		    10월 10, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="../../../../categories/코딩테스트/">코딩테스트</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt --></p>
+<hr>
+<h2 id="문제"><a href="#문제" class="headerlink" title="문제"></a>문제</h2><blockquote><p>A non-empty array A consisting of N integers is given. The array contains an odd number of elements,</p>
+<p>and each element of the array can be paired with another element that has the same value, except for one element that is left unpaired.</p>
+<p>For example, in array A such that:</p>
+<p>  A[0] = 9  A[1] = 3  A[2] = 9<br>  A[3] = 3  A[4] = 9  A[5] = 7<br>  A[6] = 9<br>the elements at indexes 0 and 2 have value 9,<br>the elements at indexes 1 and 3 have value 3,<br>the elements at indexes 4 and 6 have value 9,<br>the element at index 5 has value 7 and is unpaired.<br>Write a function:</p>
+<p>function solution(A);</p>
+<p>that, given an array A consisting of N integers fulfilling the above conditions, returns the value of the unpaired element.</p>
+<p>For example, given array A such that:</p>
+<p>  A[0] = 9  A[1] = 3  A[2] = 9<br>  A[3] = 3  A[4] = 9  A[5] = 7<br>  A[6] = 9<br>the function should return 7, as explained in the example above.</p>
+<p>Write an efficient algorithm for the following assumptions:</p>
+<p>N is an odd integer within the range [1..1,000,000];<br>each element of array A is an integer within the range [1..1,000,000,000];<br>all but one of the values in A occur an even number of times.</p>
+</blockquote>
+<hr>
+<p>문제해설 : 비어있지 않은 배열 A는 integers N으로 구성되어 있습니다.</p>
+<p>배열은 홀수 개의 요소가 포함되어 있으며, 각 요소는 한개의 요소를 제외하고, 다른 요소와 같은 값으로서 쌍을 이룰 수 있습니다.</p>
+<p>예를 들어 배열 A는 다음과 같습니다.</p>
+<p>A[0] = 9<br>A[1] = 3<br>A[2] = 9<br>A[3] = 3<br>A[4] = 9<br>A[5] = 7<br>A[6] = 9</p>
+<p>인덱스 0과 2의 값은 3 입니다.<br>인덱스 4와 6의 값은 9 입니다.<br>인덱스 5의 값은 7이며 쌍을 이루지 않습니다.</p>
+<p>다음 solution(A) 함수를 작성하세요.</p>
+<p>위 조건을 만족하는 N integers로 구성된 배열 A는 쌍을 이루지 않는 값을 리턴합니다.</p>
+<p>예를 들면 주어진 배열 A는</p>
+<p>A[0] = 9<br>A[1] = 3<br>A[2] = 9<br>A[3] = 3<br>A[4] = 9<br>A[5] = 7<br>A[6] = 9</p>
+<p>위 설명대로라면 7을 리턴합니다.</p>
+<p>다음 가정을 토대로 효율적인 알고리즘을 작성하세요.</p>
+<ul>
+<li>N은 [1…1,000,000]의 범위를 가진 홀수 입니다.</li>
+<li>배열 A의 각 요소는 [1..1,000,000,000]의 범위를 가집니다.</li>
+<li>A의 값 중 하나를 제외하고 모두 짝수 번 발생합니다.</li>
+</ul>
+<hr>
+<h2 id="답안-해설"><a href="#답안-해설" class="headerlink" title="답안 해설"></a>답안 해설</h2><p>내가 작성한 코드 :</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">js</li></ul></figcaption><div class="tabs-content"><figure class="highlight js" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">A</span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> arr = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; A.length; i++) {</span><br><span class="line">        <span class="keyword">var</span> foundVal = arr.find(<span class="function"><span class="params">item</span> =&gt;</span> {</span><br><span class="line">            <span class="keyword">return</span> item.value === A[i];</span><br><span class="line">        });</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(foundVal == <span class="literal">undefined</span>) {</span><br><span class="line">            arr.push({</span><br><span class="line">                value: A[i],</span><br><span class="line">                count: <span class="number">1</span></span><br><span class="line">            });</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            foundVal.count++;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result = arr.find(<span class="function"><span class="params">item</span> =&gt;</span> {</span><br><span class="line">        <span class="keyword">return</span> item.count % <span class="number">2</span> !== <span class="number">0</span></span><br><span class="line">    });</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result.value;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>내가 생각한 접근법은 배열을 새로 만들고 각 배열의 요소에 대한 count를 저장한다.<br>배열 A를 순회하면서 중복되는 값의 count는 증가할 것이고 배열 A를 전부 순회하였을 때, 2로 나눠지지 않는 값을 찾는다.<br>시간 복잡도는 배열 A를 순회하면서 이에 매칭되는 값을 저장하는 arr도 순회해야 하기 때문에 O(N^2)가 된다.</p>
+<p>P.S 상당히 고민 끝에 푼 테스트였는데 결과도 좋지 않아 현타가 왔다.</p>
+<p>Test Score는 66%였으며 Performance tests에서 medium, big1, big2에서 Timeout error가 났다.</p>
+<div class="figure center" style="width:100%;"><a class="fancybox" href="codility-oddoccurrences-01.png" title="" data-caption="" data-fancybox="codility"><img class="fig-img" src="codility-oddoccurrences-01.png" style="width:100%;height:100%;" alt=""></a></div><div style="clear:both;"></div>
+<div class="figure center" style="width:100%;"><a class="fancybox" href="codility-oddoccurrences-02.png" title="" data-caption="" data-fancybox="codility"><img class="fig-img" src="codility-oddoccurrences-02.png" style="width:100%;height:100%;" alt=""></a></div><div style="clear:both;"></div>
+<p>도대체 어떻게 효율적으로 짤 수 있을까 생각하다 결국엔 답을 찾아보았다.<br>답을 찾아보고 난후 더욱 맨붕이 심하게 왔다…<br>봐도 이해가 가지 않았기 때문…</p>
+<p>이 문제에 대한 최적의 알고리즘은 다음과 같다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">js</li></ul></figcaption><div class="tabs-content"><figure class="highlight js" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">A</span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> result = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> item <span class="keyword">of</span> A) {</span><br><span class="line">        result ^= item;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>(코드가 어찌 이리 간단하면서도 이해가 가지 않을 수가 있지??!?)<br>(저기서 XOR연산을 왜 하는거지??)<br>결론은 간단했다. XOR (배타적 논리합: XOR연산은 두 개의 비트 값이 다르면 1, 같으면 0을 돌려준다) 연산의 특성 때문에 자체적으로 쌍을 이루지 않는 값은 필터링이 된다.<br>XOR연산은 다음과 같은 특성을 가진다.</p>
+<ul>
+<li>X^0 = X</li>
+<li>X ^ X = 0</li>
+</ul>
+<p>즉 같은 값을 XOR연산을 한다면 그 값은 0이 되며 0과 X의 XOR 연산은 자기 자신이 된다.</p>
+<p>예를 들어 3^0의 경우</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0000</span></span><br><span class="line"><span class="number">0011</span></span><br><span class="line">----</span><br><span class="line"><span class="number">0011</span></span><br></pre></td></tr></table></figure>
+<p>본인과 같은 3이 되고,<br><br></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0011</span></span><br><span class="line"><span class="number">0011</span></span><br><span class="line">----</span><br><span class="line"><span class="number">0000</span></span><br></pre></td></tr></table></figure>
+<p>둘다 같은 비트이기 때문에 0이 된다.</p>
+<p>즉 위 문제의 배열 A에서 1개의 요소만 쌍을 이루지 않고 나머지는 모두 같은 값이므로</p>
+<p>A[0]^A[1]^A[2]….A[N-1]^A[N] 이 되며<br>쌍을 이루는 값들은 XOR연산에 의해 0으로,<br>쌍을 이루지 못한 요소는 그대로 남게되어<br>0^A[X] = A[X] 가 된다.<br>결국 쌍을 이루지 못한 값만 남게 되는것이다.</p>
+<p>결론: 세상에 천재는 많고 발끝 만치라도 따라 갈 수 있게 좀 더 연습이 필요하다.</p>
+<p>출처 : <a href="https://codesays.com/2014/solution-to-perm-missing-elem-by-codility/" target="_blank" rel="noopener">Solution to Odd-Occurrences-In-Array by codility</a></p>
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../../../../tags/이직/">이직</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/코딜리티/">코딜리티</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/코테/">코테</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">이전</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../08/30/codility-lesson-02-array-cyclerotation/" data-tooltip="codility-lesson-02-array-cyclerotation" aria-label="다음: codility-lesson-02-array-cyclerotation">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">다음</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="이 게시글을 공유하기">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/" title="페이스북으로 공유하기">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="맨위로 가기">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 gamjamanduu. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">이전</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../08/30/codility-lesson-02-array-cyclerotation/" data-tooltip="codility-lesson-02-array-cyclerotation" aria-label="다음: codility-lesson-02-array-cyclerotation">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">다음</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="이 게시글을 공유하기">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/" title="페이스북으로 공유하기">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="맨위로 가기">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>페이스북으로 공유하기</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">gamjamanduu</h4>
+        
+            <div id="about-card-bio"><p>웹을 사랑하는 Front-End 개발자입니다.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Front-End Web Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                seoul
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('../../../../assets/images/background3.jpeg');"></div>
+        <!--SCRIPTS-->
+<script src="../../../../assets/js/script-cannrgzznxsfbaezzuhubagobcdi8eysjmld5qptmbqoqeonhxe8sxuhg9ck.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'http://ksw1652.github.io/2018/10/10/codility-lesson-02-OddOccurrencesInArray/';
+                 
+                    this.page.identifier = '2018/10/10/codility-lesson-02-OddOccurrencesInArray/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'gamjamanduu';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
