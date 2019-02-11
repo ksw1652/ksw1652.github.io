@@ -2073,7 +2073,7 @@ a.fancybox {
 .post-header-cover {
   display: table;
   position: relative;
-  top: 0;
+  top: 0px;
   left: 0;
   background-size: cover;
   background-position: center;
@@ -2110,7 +2110,8 @@ a.fancybox {
         color: white; }
 
 .post-header-cover.post-header-cover--partial {
-  height: 60%; margin-top: 55px;}
+  height: 60%;
+  margin-top: 55px; }
 
 .post-header-cover-caption {
   margin: 5px 0 50px 0; }
