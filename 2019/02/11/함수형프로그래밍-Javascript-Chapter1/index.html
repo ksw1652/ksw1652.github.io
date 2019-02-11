@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="gamjamanduu의 블로그">
+    <title>함수형 자바스크립트 스터디 내용정리 (Chapter1) - gamjamanduu의 블로그</title>
+    <meta name="author" content="gamjamanduu">
+    
+        <meta name="keywords" content="Engineering,Front-End,FE,FrontEnd,frontend,javascript,">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="../../../../atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"gamjamanduu","sameAs":["https://github.com/ksw1652","https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/"],"image":"gamjamanduu.jpg"},"articleBody":"\n본 포스트의 내용은 FUNCTIONAL PROGRAMMING IN JAVASCRIPT (함수형 자바스크립트) 교재의 스터디 내용을 기반으로 작성하였습니다\n이 장의 내용\n\n함수형 사고방식\n함수형 프로그래밍의 정의와 필요성\n불변성, 순수함수 원리\n함수형 프로그래밍 기법 및 그것이 설계 전반에 미치는 영향\n\n\n근래의 웹 플랫폼은 굉장히 빠른 속도로 발전 중이고 브라우저 역시 꾸준히 진화하고 있지만, 최종 사용자들의 요건이 웹 어플리케이션 설계 방식에 지대한 영향을 미칩니다.\n오늘날의 웹은 수년 전 웹과는 근본적으로 다릅니다. 과거에 기술적으로 거의 불가능했던 일들이 지금은 얼마든지 구현가능 합니다.\n최근 유행하기 시작한 리액티브 프로그래밍 은 데이터 흐름(data flow)과 변경 전파(Propagation of change)에 초점을 둡니다. 이 개념은 자바스크립트 비동기 또는 이벤트 중심(event-driven)코드를 다룰 때에도 아주 중요합니다.\n이러한 흐름에 맞추어 반드시 자문해봐 할 애플리케이션의 설계 요소는\n\n확장성: 추가 기능을 지원하기 위해 계속 코드를 리팩토링 해야 하는가?모듈화 용이성: 파일 하나를 고치면 다른 파일도 영향을 받는가?테스트성 : 함수를 단위 테스트하기 어려운가?헤아리기 쉬움: 체계도 없고 따라가기 어려운 코드인가\n\n이 중 한가지라도 “예” 또는 “잘 모르겠는데요”라고 대답했다면 이 책은 여러분의 생산성을 높여주는 적합한 안내서가 될것입니다.\n1.1 함수형 프로그래밍은 과연 유용한가?자바스크립트의 맥락에서 보면 FP(Functional Programming)사고방식은 자바스크립트만의 매우 표현적인 특성을 가다듬어, 깔끔하면서도 모듈적인, 테스트하기 좋은 간결한 코드들 작성하는데 도움이 됩니다.\n사실 자바스크립트는 함수형 스타일로 작성해야 더 효과적이라는 측면이 오랫동안 간과되었습니다. 자바스크립트라는 언어를 많이 오해한 부분도 있지만 언어 내부에 상태를 적절히 관리할 장치가 마땅치 않았던 이유도 있습니다. (상태관리를 개발자에게 떠넘기는 동적인 플랫폼이기 떄문)\n결국 이는 각종 애플리케이션 버그를 양산하는 근원이 되었습니다.\n자바스크립트 코드를 작성하면 대부분의 문제가 해결됩니다. 순수함수에 기반을 두고 이미 검증된 기법과 관례에 따라 구현하면 코드가 점점 복잡해지더라도 헤아리기 쉬운 방향으로 작성할 수 있습니다.\n1.2 함수형 프로그래밍이란?함수형 프로그래밍의 진정한 목표는 애플리케이션의 부수효과(side effect)를 방지 하고 상태변이(mutation of state)를 감소하기 위해 데이터의 제어흐름과 연산을 추상화(abstract)하는 것입니다.\n간단한 예제로서 Hello world로 시작해보겠습니다.\njavascript1document.querySelector('#msg').innerHTML = '&lt;h1&gt;Hello World&lt;/h1&gt;';\n이 예제는 모든 것을 하드코딩한 예제로서 메시지를 동적으로 표시할 수 없습니다. 내용이나 형식을 바꾼다든가, 타깃 요소를 달리한다든지 할 땐 표현식을 전부 재작성해야 합니다. 함수를 만들어 달라지는 부분만 매개변수로 주면 같은 코드를 다시 사용할 수 있습니다.\njavascript123456function printMessage(elementId, format, message) {  document.querySelector(`#${elementId}`).innerHTML =     `&lt;${format}&gt;${message}&lt;/${format}&gt;`;}printMessage('msg', 'h1', 'Hello World');\n이런식으로 작성하면 조금 나아지는듯 하나 완벽히 재사용 가능한 코드는 아닙니다.\n메시지를 HTML 페이지 대신 파일에 쓴다면 어떨까요? 매개변수가 단순히 스칼라(scalar)값이 아닌, 특정 기능을 함수에 추가하여 매개변수로 전달하는, 다시 말해 함수를 매개변수화(parameterize)하는 전혀 다른 차원의 과정을 떠올려야 합니다. 함수형 프로그래밍은 함수를 아주 왕성하게 활용합니다.\n함수형 printMessagejavascript1234var printMessage = run(addToDom('msg'), h1, echo);printMessage('Hello World');//임시함수 run에 관한 자세한 내용은 http://mng.bz/nmax 참조\n언뜻 봐도 기존 코드와는 다릅니다. 일단 h1은 스칼라값이 아닌, addToDom, echo와 같은 함수입니다. 작은 함수들을 재료로 새로운 함수를 만들어내는 것처럼 보입니다.\n여기에는 그럴 만한 이유가 있습니다. 위 예제는 재사용성과 믿음성(reliability)이 좋고 이해하기 쉬운, 더 작은 조각들로 프로그램을 나눈 후, 전체적으로 더 헤아리기 쉬운 형태의 프로그램으로 다시 조합하는 과정을 나타냅니다.\n모든 함수형 프로그래밍이 이 기본원리를 따릅니다. run함수는 세 함수를 마치 자전거 체인처럼 연결해서 한 함수의 반환값이 다른 함수의 입력값으로 전달되게끔 합니다. 그래서 echo가 “Hello World” 문자열을 반환하면 h1으로 전달되고, 마지막으로 이 함수의 결과값이 addToDom에 넘어갑니다.\n함수형 코드는 왜 이런 모습일까요? 기본적으로 본연의 기능은 그대로 간직한 채 코드를 쉽게 변경하기 위해 코드 자체를 매개변수화 하는 것 입니다. 이렇게 하면 내부로직은 하나도 안 고치고도 printMessage 메시지를 2회 표시하거나 또는 h2요소로 DOM대신 콘솔에 추력하게 변경하는 일도 수월해 집니다.\nprintMessage를 확장javascript123var printMessage = run(console.log, repeat(2), h2, echo);printMessage('Get Functional')\n함수형/비함수형 해법을 견주어보면 근본적으로 스타일이 다르다는 것을 알 수 있습니다. 이는 FP특유의 선언적 개발방식 때문에 그렇습니다. 함수형 프로그래밍을 온전히 이해하려면, 먼저 그 이면에 깔려 있는 다음 기본 개념을 숙지해야 합니다.\n\n\n선언적 프로그래밍\n순수함수\n참조 투명성\n불변성\n\n\n1.2.1 함수형 프로그래밍은 선언적함수형 프로그래밍은 큰 틀에서 선언적(declarative)프로그래밍 패러다임에 속합니다. 내부적으로 코드를 어떻게 구현했는지, 데이터는 어떻게 흘러가는지 밝히지 않은 채 연산/작업을 표현하는 사상입니다.\n아직은 C#, C++ 등의 구조적/객체지향 언어가 지원하는 명령형(imperative) 또는 절차적(procedural) 모델이 더 많이 쓰입니다. 명령형 프로그램은 어떤 결과를 내기 위해 시스템의 상태를 변경하는 구분을 위에서 아래로 축 늘어놓은 순차열에 불과합니다.\n숫자배열의 원소들을 모두 제곱수로 바꾸는 간단한 예제를 봅시다. 명령형은 다음과 같은 모습입니다.\njavascript123456var array = [0,1,2,3,4,5,6,7,8,9];for(var i=0; i&lt; array.length; i++) {  array[i] = Math.pow(array[i], 2);}//array --&gt; [0,1,4,9,16,25,36,49,64,81]\n명령형 프로그래밍은 컴퓨터에게 원하는 작업(루프를 반복하면서 각 숫자의 제곱수를 계산)을 어떻게 하는지 상세히 이릅니다. 사실 이게 가장 흔한 코딩 방법이고 여러분도 처음에 이런 코드를 떠올렸을 겁니다.\n이와 달리 선언적 프로그래밍은 프로그램의 서술부(description)와 평가부(evaluation)를 분리하여, 제어 흐름이나 상태 변화를 특정하지 않고도 프로그램 로직이 무엇인지를 표현식(expression)으로 나타냅니다. (SQL 구문도 선언적 프로그래밍의 한 예)\n같은 작업이라도 함수형으로 접근하면, 개발자가 각 요소를 올바르게 작동시키는 일에만 전념하고 루프 제어는 시스템의 다른 파트에 일임할 수 있습니다. 다음과 같은 힘든 일은 Array.map()에게 모두 맡기면 그만입니다.javascript1234567[0,1,2,3,4,5,6,7,8,9].map(  function(num) {    return Math.pow(num, 2);  })// --&gt; [0,1,4,9,16,25,36,49,64,81]이전 코드와 비교하면 루프 카운터를 관리하고 배열 인덱스에 정확하게 접근하는 일 따위는 개발자가 신경 쓸 필요가 없어 부담이 줄어듭니다.\n사실 코드가 길어지면 버그가 날 가능성도 높아지고, 일반 루프는 함수로 추상하지 않는 한 재사용 자체가 안됩니다. 지금부터 우리가 할 일이 바로 함수로 추상하는 작업입니다.\n3장에서는 수동 루프를 완전히 들어내고 함수를 매개변수로 받는 map, reduce, filter 같은 일급 고계함수(higher-order function)를 이용해 재사용성, 확장성이 우수한 선언적 코드로 대체합니다.\n루프를 함수로 추상하면 ES6부터 새로 선보인 람다표현식(lambda expression)이나 화살표 함수(arrow fucntion)를 사용할 수 있습니다. 람다 표현식은 함수 인수로 전달 가능한 익명함수(anonymous function)를 대체할 수 있는 깔끔한 수단입니다.\njavascript12[0,1,2,3,4,5,6,7,8,9].map(num =&gt; Math.pow(num, 2));// --&gt; [0,1,4,9,16,25,36,49,64,81]\n왜 루프를 제거해야 할까요? 루프는 재사용하기도 어렵거니와 다른 연산에 끼워 넣기도 어려운 명령형 구조물입니다. 또 루프는 성격상 반복할 때마다 값이나 상태가 계속 바뀝니다.\n그러나 함수형 프로그램은 무상태성(statelessness)과 불변성(immutability)을 지향합니다. 무상태 코드는 전역 상태를 바꾸거나 혼선을 일으킬 가능성이 단 1%도 없습니다. 상태를 두지 않으려면 부수효과와 상태 변이를 일으키지 않는 순수함수(pure funciton)를 써야합니다.\n1.2.2 순수함수와 부수효과함수형 프로그래밍은 순수함수로 구성된 불변 프로그램 구축을 전재로 합니다.순수함수의 특성을 정리하면 다음과 같습니다.\n\n\n주어진 입력에만 의존할 뿐, 평가 도중 또는 호출 간 변경될 수 있는 숨겨진 값이나 외부상태와 무관하게 동작합니다.\n전역 객체나 레퍼런스로 전달된 매개변수를 수정하는 등 함수 스코프 밖에서 어떠한 변경도 일으키지 않습니다.위 요건이 성립되지 않는 함수는 모두 불순(impure) 하다고 볼수 있습니다.\n\n\n다음 함수를 봅시다.javascript1234var counter = 0;function increment() {  return ++counter;}이 함수는 자신의 스코프에 없는 외부 변수 counter를 읽고 수정하므로 불순합니다.일반적으로 외부 자원을 상대로 데이터를 읽고 쓰는 함수는 부수효과를 동반합니다.Date.now()처럼 많이 쓰이는 날짜/시간 함수도 미리 헤아릴 수 있는 일정한 결과값을 내지 않기 때문에 순수함수가 아닙니다.\n여기서 counter는 암시작(implicit) 전역변수를 통해 접근합니다. window객체를 지칭하는 this로 접근하기 때문에 해당함수의 런타임 콘텍스트에 따라 다른 값이 도출 될 수 있습니다.\n부수효과가 발생하는 상황은 다양합니다.\n\n\n전역 범위에서 변수, 속성, 자료구조를 변경\n함수의 원래 인수 값을 변경\n사용자 입력을 처리\n예외를 일으킨 해당 함수에서 catch하지 않고 그대로 throw함\n화면 또는 로그 파일에 출력\nHTML 문서, 브라우저 쿠키, DB에 질의\n\n\n실제로 FP는 모든 상태변이를 근절하자는게 아니라 상태변이를 줄이고 관리할 수 있는 프레임워크를 제공하여 순수/불순 함수를 구분하고자 사용합니다.\n좀 더 현실적인 예제를 들어봅시다.당신은 학생 데이터를 관리하는 프로젝트를 참여중이며 학생 레코드를 검색하여 브라우저에 표시하는 함수를 작성한다 가정해 봅시다.javascript1234567891011function showStudent(ssn) {  let student = db.find(ssn);  if(student !== null) {    document.querySelector(`#${elementId}`).innerHTML =     `${student.ssn},${student.firstname},${student.lastname}`;  } else {    throw new Error('학생을 찾을 수 없습니다!');  }}showStudent('444-44-4444')이 함수는 확실히 자신의 스코프를 벗어나 몇 가지 부수효과 파장을 일으킵니다.\n\n변수 db를 통해 데이터에 접근하는데, 함수 서명(signature)에는 이런 매개변수가 없으니 이는 외부 변수 입니다. 문제는 이 변수가 실행 중 언제라도 null을 참조하거나 호출 단계마다 상이한 값을 가리키면 결과값이 완전히 달라지고 프로그램 무결성이 깨질 수 있다는 점입니다.\n\nelementId는 그 값이 언제라도 바뀔 수 있는 전역 변수라 이 함수가 어쩔 도리가 없습니다.\n\nHTML요소를 직접 고칩니다. HTML 문서는 그 자체로 가변적인, 전역 공유자원입니다.\n\n학생 레코드를 찾지 못해 예외를 던지면 전체 프로그램의 스택이 툭 풀리면서 종료될 것 입니다.\n\n","dateCreated":"2019-02-11T16:38:27+09:00","dateModified":"2019-02-11T23:40:30+09:00","datePublished":"2019-02-11T16:38:27+09:00","description":"\n함수형 자바스크립트 - 스터디 정리 Chapter 1 (함수형 길들이기)","headline":"함수형 자바스크립트 스터디 내용정리 (Chapter1)","image":["https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-thumbnail.png","https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-banner.jpeg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/"},"publisher":{"@type":"Organization","name":"gamjamanduu","sameAs":["https://github.com/ksw1652","https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/"],"image":"gamjamanduu.jpg","logo":{"@type":"ImageObject","url":"gamjamanduu.jpg"}},"url":"http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/","keywords":"함수형자바스크립트, FunctionalProgrammingInJavascript","thumbnailUrl":"https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-thumbnail.png"}</script>
+    <meta name="description" content="함수형 자바스크립트 - 스터디 정리 Chapter 1 (함수형 길들이기)">
+<meta name="keywords" content="함수형자바스크립트,FunctionalProgrammingInJavascript">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="함수형 자바스크립트 스터디 내용정리 (Chapter1)">
+<meta property="og:url" content="http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/index.html">
+<meta property="og:site_name" content="gamjamanduu의 블로그">
+<meta property="og:description" content="함수형 자바스크립트 - 스터디 정리 Chapter 1 (함수형 길들이기)">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2019-02-11T14:40:30.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="함수형 자바스크립트 스터디 내용정리 (Chapter1)">
+<meta name="twitter:description" content="함수형 자바스크립트 - 스터디 정리 Chapter 1 (함수형 길들이기)">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://ksw1652.github.io../../../../assets/images/gamjamanduu.jpg"/>
+    
+    
+        <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-thumbnail.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-thumbnail.png" />
+    
+    
+        <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-banner.jpeg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-banner.jpeg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="../../../../assets/css/style-4u8lztmshhyzusbvjv1z5orhacxhtysipqv8sfzubxcuoohfm1tce8lbioto.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-123793799-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="../../../../ ">gamjamanduu의 블로그</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="../../../../#about">
+                    <img class="sidebar-profile-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">gamjamanduu</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>웹을 사랑하는 Front-End 개발자입니다.</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../ "
+                            
+                            title="홈으로"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">홈으로</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../all-categories"
+                            
+                            title="카테고리"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">카테고리</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/ksw1652" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/%EC%84%B1%EC%9A%B0-%EA%B9%80-76034a63/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="../../../../atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://s3.ap-northeast-2.amazonaws.com/file.welaenglish.co.kr/functional-programming-banner.jpeg');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            함수형 자바스크립트 스터디 내용정리 (Chapter1)
+        </h1>
+    
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt --></p>
+<p><em>본 포스트의 내용은 <strong>FUNCTIONAL PROGRAMMING IN JAVASCRIPT (함수형 자바스크립트)</strong> 교재의 스터디 내용을 기반으로 작성하였습니다</em></p>
+<h3 id="이-장의-내용"><a href="#이-장의-내용" class="headerlink" title="이 장의 내용"></a>이 장의 내용</h3><blockquote>
+<ul>
+<li>함수형 사고방식</li>
+<li>함수형 프로그래밍의 정의와 필요성</li>
+<li>불변성, 순수함수 원리</li>
+<li>함수형 프로그래밍 기법 및 그것이 설계 전반에 미치는 영향</li>
+</ul>
+</blockquote>
+<p>근래의 웹 플랫폼은 굉장히 빠른 속도로 발전 중이고 브라우저 역시 꾸준히 진화하고 있지만, 최종 사용자들의 요건이 웹 어플리케이션 설계 방식에 지대한 영향을 미칩니다.</p>
+<p>오늘날의 웹은 수년 전 웹과는 근본적으로 다릅니다. 과거에 기술적으로 거의 불가능했던 일들이 지금은 얼마든지 구현가능 합니다.</p>
+<p>최근 유행하기 시작한 <strong>리액티브 프로그래밍</strong> 은 데이터 흐름(data flow)과 변경 전파(Propagation of change)에 초점을 둡니다. 이 개념은 자바스크립트 비동기 또는 이벤트 중심(event-driven)코드를 다룰 때에도 아주 중요합니다.</p>
+<p>이러한 흐름에 맞추어 반드시 자문해봐 할 애플리케이션의 설계 요소는</p>
+<blockquote>
+<p><strong>확장성</strong>: 추가 기능을 지원하기 위해 계속 코드를 리팩토링 해야 하는가?<br><strong>모듈화 용이성</strong>: 파일 하나를 고치면 다른 파일도 영향을 받는가?<br><strong>테스트성</strong> : 함수를 단위 테스트하기 어려운가?<br><strong>헤아리기 쉬움</strong>: 체계도 없고 따라가기 어려운 코드인가</p>
+</blockquote>
+<p>이 중 한가지라도 “예” 또는 “잘 모르겠는데요”라고 대답했다면 이 책은 여러분의 생산성을 높여주는 적합한 안내서가 될것입니다.</p>
+<h2 id="1-1-함수형-프로그래밍은-과연-유용한가"><a href="#1-1-함수형-프로그래밍은-과연-유용한가" class="headerlink" title="1.1 함수형 프로그래밍은 과연 유용한가?"></a>1.1 함수형 프로그래밍은 과연 유용한가?</h2><p>자바스크립트의 맥락에서 보면 FP(Functional Programming)사고방식은 자바스크립트만의 매우 표현적인 특성을 가다듬어, 깔끔하면서도 모듈적인, 테스트하기 좋은 간결한 코드들 작성하는데 도움이 됩니다.</p>
+<p>사실 자바스크립트는 함수형 스타일로 작성해야 더 효과적이라는 측면이 오랫동안 간과되었습니다. 자바스크립트라는 언어를 많이 오해한 부분도 있지만 언어 내부에 상태를 적절히 관리할 장치가 마땅치 않았던 이유도 있습니다. (상태관리를 개발자에게 떠넘기는 동적인 플랫폼이기 떄문)</p>
+<p>결국 이는 각종 애플리케이션 버그를 양산하는 근원이 되었습니다.</p>
+<p>자바스크립트 코드를 작성하면 대부분의 문제가 해결됩니다. 순수함수에 기반을 두고 이미 검증된 기법과 관례에 따라 구현하면 코드가 점점 복잡해지더라도 헤아리기 쉬운 방향으로 작성할 수 있습니다.</p>
+<h2 id="1-2-함수형-프로그래밍이란"><a href="#1-2-함수형-프로그래밍이란" class="headerlink" title="1.2 함수형 프로그래밍이란?"></a>1.2 함수형 프로그래밍이란?</h2><p>함수형 프로그래밍의 진정한 목표는 애플리케이션의 <strong>부수효과(side effect)를 방지</strong> 하고 <strong>상태변이(mutation of state)를 감소</strong>하기 위해 <strong>데이터의 제어흐름과 연산을 추상화(abstract)</strong>하는 것입니다.</p>
+<p>간단한 예제로서 Hello world로 시작해보겠습니다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#msg'</span>).innerHTML = <span class="string">'&lt;h1&gt;Hello World&lt;/h1&gt;'</span>;</span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>이 예제는 모든 것을 하드코딩한 예제로서 메시지를 동적으로 표시할 수 없습니다. 내용이나 형식을 바꾼다든가, 타깃 요소를 달리한다든지 할 땐 표현식을 전부 재작성해야 합니다. 함수를 만들어 달라지는 부분만 매개변수로 주면 같은 코드를 다시 사용할 수 있습니다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printMessage</span>(<span class="params">elementId, format, message</span>) </span>{</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">`#<span class="subst">${elementId}</span>`</span>).innerHTML = </span><br><span class="line">    <span class="string">`&lt;<span class="subst">${format}</span>&gt;<span class="subst">${message}</span>&lt;/<span class="subst">${format}</span>&gt;`</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">printMessage(<span class="string">'msg'</span>, <span class="string">'h1'</span>, <span class="string">'Hello World'</span>);</span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>이런식으로 작성하면 조금 나아지는듯 하나 완벽히 재사용 가능한 코드는 아닙니다.</p>
+<p>메시지를 HTML 페이지 대신 파일에 쓴다면 어떨까요? 매개변수가 단순히 스칼라(scalar)값이 아닌, 특정 기능을 함수에 추가하여 매개변수로 전달하는, 다시 말해 함수를 매개변수화(parameterize)하는 전혀 다른 차원의 과정을 떠올려야 합니다. 함수형 프로그래밍은 함수를 아주 왕성하게 활용합니다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><span>함수형 printMessage</span><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> printMessage = run(addToDom(<span class="string">'msg'</span>), h1, echo);</span><br><span class="line">printMessage(<span class="string">'Hello World'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//임시함수 run에 관한 자세한 내용은 http://mng.bz/nmax 참조</span></span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>언뜻 봐도 기존 코드와는 다릅니다. 일단 h1은 스칼라값이 아닌, addToDom, echo와 같은 함수입니다. 작은 함수들을 재료로 새로운 함수를 만들어내는 것처럼 보입니다.</p>
+<p>여기에는 그럴 만한 이유가 있습니다. 위 예제는 재사용성과 믿음성(reliability)이 좋고 이해하기 쉬운, 더 작은 조각들로 프로그램을 나눈 후, 전체적으로 더 헤아리기 쉬운 형태의 프로그램으로 다시 조합하는 과정을 나타냅니다.</p>
+<p>모든 함수형 프로그래밍이 이 기본원리를 따릅니다. run함수는 세 함수를 마치 자전거 체인처럼 연결해서 한 함수의 반환값이 다른 함수의 입력값으로 전달되게끔 합니다. 그래서 echo가 “Hello World” 문자열을 반환하면 h1으로 전달되고, 마지막으로 이 함수의 결과값이 addToDom에 넘어갑니다.</p>
+<p>함수형 코드는 왜 이런 모습일까요? 기본적으로 본연의 기능은 그대로 간직한 채 코드를 쉽게 변경하기 위해 코드 자체를 매개변수화 하는 것 입니다. 이렇게 하면 내부로직은 하나도 안 고치고도 printMessage 메시지를 2회 표시하거나 또는 h2요소로 DOM대신 콘솔에 추력하게 변경하는 일도 수월해 집니다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><span>printMessage를 확장</span><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> printMessage = run(<span class="built_in">console</span>.log, repeat(<span class="number">2</span>), h2, echo);</span><br><span class="line"></span><br><span class="line">printMessage(<span class="string">'Get Functional'</span>)</span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>함수형/비함수형 해법을 견주어보면 근본적으로 스타일이 다르다는 것을 알 수 있습니다. 이는 FP특유의 선언적 개발방식 때문에 그렇습니다. 함수형 프로그래밍을 온전히 이해하려면, 먼저 그 이면에 깔려 있는 다음 기본 개념을 숙지해야 합니다.</p>
+<blockquote>
+<ul>
+<li>선언적 프로그래밍</li>
+<li>순수함수</li>
+<li>참조 투명성</li>
+<li>불변성</li>
+</ul>
+</blockquote>
+<h3 id="1-2-1-함수형-프로그래밍은-선언적"><a href="#1-2-1-함수형-프로그래밍은-선언적" class="headerlink" title="1.2.1 함수형 프로그래밍은 선언적"></a>1.2.1 함수형 프로그래밍은 선언적</h3><p>함수형 프로그래밍은 큰 틀에서 선언적(declarative)프로그래밍 패러다임에 속합니다. 내부적으로 코드를 어떻게 구현했는지, 데이터는 어떻게 흘러가는지 밝히지 않은 채 연산/작업을 표현하는 사상입니다.</p>
+<p>아직은 C#, C++ 등의 구조적/객체지향 언어가 지원하는 <strong>명령형(imperative)</strong> 또는 <strong>절차적(procedural)</strong> 모델이 더 많이 쓰입니다. 명령형 프로그램은 어떤 결과를 내기 위해 시스템의 상태를 변경하는 구분을 위에서 아래로 축 늘어놓은 순차열에 불과합니다.</p>
+<p>숫자배열의 원소들을 모두 제곱수로 바꾸는 간단한 예제를 봅시다. 명령형은 다음과 같은 모습입니다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt; array.length; i++) {</span><br><span class="line">  array[i] = <span class="built_in">Math</span>.pow(array[i], <span class="number">2</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">//array --&gt; [0,1,4,9,16,25,36,49,64,81]</span></span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>명령형 프로그래밍은 컴퓨터에게 원하는 작업(루프를 반복하면서 각 숫자의 제곱수를 계산)을 <strong>어떻게</strong> 하는지 상세히 이릅니다. 사실 이게 가장 흔한 코딩 방법이고 여러분도 처음에 이런 코드를 떠올렸을 겁니다.</p>
+<p>이와 달리 선언적 프로그래밍은 프로그램의 <strong>서술부(description)</strong>와 <strong>평가부(evaluation)</strong>를 분리하여, 제어 흐름이나 상태 변화를 특정하지 않고도 프로그램 로직이 무엇인지를 <strong>표현식(expression)</strong>으로 나타냅니다. (SQL 구문도 선언적 프로그래밍의 한 예)</p>
+<p>같은 작업이라도 함수형으로 접근하면, 개발자가 <strong>각 요소를 올바르게 작동시키는 일</strong>에만 전념하고 루프 제어는 시스템의 다른 파트에 일임할 수 있습니다. 다음과 같은 힘든 일은 Array.map()에게 모두 맡기면 그만입니다.<br><figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>].map(</span><br><span class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.pow(num, <span class="number">2</span>);</span><br><span class="line">  }</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// --&gt; [0,1,4,9,16,25,36,49,64,81]</span></span><br></pre></td></tr></tbody></table></figure></div></figure><br>이전 코드와 비교하면 루프 카운터를 관리하고 배열 인덱스에 정확하게 접근하는 일 따위는 개발자가 신경 쓸 필요가 없어 부담이 줄어듭니다.</p>
+<p>사실 코드가 길어지면 버그가 날 가능성도 높아지고, 일반 루프는 함수로 추상하지 않는 한 재사용 자체가 안됩니다. 지금부터 우리가 할 일이 바로 <strong>함수로 추상</strong>하는 작업입니다.</p>
+<p>3장에서는 수동 루프를 완전히 들어내고 함수를 매개변수로 받는 map, reduce, filter 같은 <strong>일급 고계함수(higher-order function)</strong>를 이용해 재사용성, 확장성이 우수한 선언적 코드로 대체합니다.</p>
+<p>루프를 함수로 추상하면 ES6부터 새로 선보인 <strong>람다표현식(lambda expression)</strong>이나 <strong>화살표 함수(arrow fucntion)</strong>를 사용할 수 있습니다. 람다 표현식은 함수 인수로 전달 가능한 익명함수(anonymous function)를 대체할 수 있는 깔끔한 수단입니다.</p>
+<figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>].map(<span class="function"><span class="params">num</span> =&gt;</span> <span class="built_in">Math</span>.pow(num, <span class="number">2</span>));</span><br><span class="line"><span class="comment">// --&gt; [0,1,4,9,16,25,36,49,64,81]</span></span><br></pre></td></tr></tbody></table></figure></div></figure>
+<p>왜 루프를 제거해야 할까요? 루프는 재사용하기도 어렵거니와 다른 연산에 끼워 넣기도 어려운 명령형 구조물입니다. 또 루프는 성격상 반복할 때마다 값이나 상태가 계속 바뀝니다.</p>
+<p>그러나 함수형 프로그램은 <strong>무상태성(statelessness)</strong>과 <strong>불변성(immutability)</strong>을 지향합니다. 무상태 코드는 전역 상태를 바꾸거나 혼선을 일으킬 가능성이 단 1%도 없습니다. 상태를 두지 않으려면 부수효과와 상태 변이를 일으키지 않는 <strong>순수함수(pure funciton)</strong>를 써야합니다.</p>
+<h3 id="1-2-2-순수함수와-부수효과"><a href="#1-2-2-순수함수와-부수효과" class="headerlink" title="1.2.2 순수함수와 부수효과"></a>1.2.2 순수함수와 부수효과</h3><p>함수형 프로그래밍은 순수함수로 구성된 불변 프로그램 구축을 전재로 합니다.<br>순수함수의 특성을 정리하면 다음과 같습니다.</p>
+<blockquote>
+<ul>
+<li>주어진 입력에만 의존할 뿐, 평가 도중 또는 호출 간 변경될 수 있는 숨겨진 값이나 외부상태와 무관하게 동작합니다.</li>
+<li>전역 객체나 레퍼런스로 전달된 매개변수를 수정하는 등 함수 스코프 밖에서 어떠한 변경도 일으키지 않습니다.<br><em>위 요건이 성립되지 않는 함수는 모두 <code>불순(impure)</code> 하다고 볼수 있습니다.</em></li>
+</ul>
+</blockquote>
+<p>다음 함수를 봅시다.<br><figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> counter = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">increment</span>(<span class="params"></span>) </span>{</span><br><span class="line">  <span class="keyword">return</span> ++counter;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></figure><br>이 함수는 자신의 스코프에 없는 외부 변수 <code>counter</code>를 읽고 수정하므로 불순합니다.<br>일반적으로 외부 자원을 상대로 데이터를 읽고 쓰는 함수는 부수효과를 동반합니다.<br>Date.now()처럼 많이 쓰이는 날짜/시간 함수도 미리 헤아릴 수 있는 일정한 결과값을 내지 않기 때문에 순수함수가 아닙니다.</p>
+<p>여기서 counter는 암시작(implicit) 전역변수를 통해 접근합니다. window객체를 지칭하는 this로 접근하기 때문에 해당함수의 런타임 콘텍스트에 따라 다른 값이 도출 될 수 있습니다.</p>
+<p>부수효과가 발생하는 상황은 다양합니다.</p>
+<blockquote>
+<ul>
+<li>전역 범위에서 변수, 속성, 자료구조를 변경</li>
+<li>함수의 원래 인수 값을 변경</li>
+<li>사용자 입력을 처리</li>
+<li>예외를 일으킨 해당 함수에서 catch하지 않고 그대로 throw함</li>
+<li>화면 또는 로그 파일에 출력</li>
+<li>HTML 문서, 브라우저 쿠키, DB에 질의</li>
+</ul>
+</blockquote>
+<p>실제로 FP는 모든 상태변이를 근절하자는게 아니라 상태변이를 줄이고 관리할 수 있는 프레임워크를 제공하여 순수/불순 함수를 구분하고자 사용합니다.</p>
+<p>좀 더 현실적인 예제를 들어봅시다.<br>당신은 학생 데이터를 관리하는 프로젝트를 참여중이며 학생 레코드를 검색하여 브라우저에 표시하는 함수를 작성한다 가정해 봅시다.<br><figure class="codeblock codeblock--tabbed"><figcaption><ul class="tabs"><li class="tab active">javascript</li></ul></figcaption><div class="tabs-content"><figure class="highlight javascript" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showStudent</span>(<span class="params">ssn</span>) </span>{</span><br><span class="line">  <span class="keyword">let</span> student = db.find(ssn);</span><br><span class="line">  <span class="keyword">if</span>(student !== <span class="literal">null</span>) {</span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">`#<span class="subst">${elementId}</span>`</span>).innerHTML = </span><br><span class="line">    <span class="string">`<span class="subst">${student.ssn}</span>,<span class="subst">${student.firstname}</span>,<span class="subst">${student.lastname}</span>`</span>;</span><br><span class="line">  } <span class="keyword">else</span> {</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'학생을 찾을 수 없습니다!'</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">showStudent(<span class="string">'444-44-4444'</span>)</span><br></pre></td></tr></tbody></table></figure></div></figure><br>이 함수는 확실히 자신의 스코프를 벗어나 몇 가지 부수효과 파장을 일으킵니다.</p>
+<ul>
+<li><p>변수 db를 통해 데이터에 접근하는데, 함수 서명(signature)에는 이런 매개변수가 없으니 이는 외부 변수 입니다. 문제는 이 변수가 실행 중 언제라도 null을 참조하거나 호출 단계마다 상이한 값을 가리키면 결과값이 완전히 달라지고 프로그램 무결성이 깨질 수 있다는 점입니다.</p>
+</li>
+<li><p>elementId는 그 값이 언제라도 바뀔 수 있는 전역 변수라 이 함수가 어쩔 도리가 없습니다.</p>
+</li>
+<li><p>HTML요소를 직접 고칩니다. HTML 문서는 그 자체로 가변적인, 전역 공유자원입니다.</p>
+</li>
+<li><p>학생 레코드를 찾지 못해 예외를 던지면 전체 프로그램의 스택이 툭 풀리면서 종료될 것 입니다.</p>
+</li>
+</ul>
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../../../../tags/FunctionalProgrammingInJavascript/">FunctionalProgrammingInJavascript</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/함수형자바스크립트/">함수형자바스크립트</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">이전</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../../2018/11/03/codility-lesson-04-CountingElements-MissingInteger/" data-tooltip="codility lesson 04 CountingElements MissingInteger" aria-label="다음: codility lesson 04 CountingElements MissingInteger">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">다음</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="이 게시글을 공유하기">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/" title="페이스북으로 공유하기">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="맨위로 가기">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 gamjamanduu. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">이전</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../../2018/11/03/codility-lesson-04-CountingElements-MissingInteger/" data-tooltip="codility lesson 04 CountingElements MissingInteger" aria-label="다음: codility lesson 04 CountingElements MissingInteger">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">다음</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="이 게시글을 공유하기">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/" title="페이스북으로 공유하기">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="맨위로 가기">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>페이스북으로 공유하기</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="../../../../assets/images/gamjamanduu.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">gamjamanduu</h4>
+        
+            <div id="about-card-bio"><p>웹을 사랑하는 Front-End 개발자입니다.</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Front-End Web Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                seoul
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('../../../../assets/images/background3.jpeg');"></div>
+        <!--SCRIPTS-->
+<script src="../../../../assets/js/script-cannrgzznxsfbaezzuhubagobcdi8eysjmld5qptmbqoqeonhxe8sxuhg9ck.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'http://ksw1652.github.io/2019/02/11/함수형프로그래밍-Javascript-Chapter1/';
+                 
+                    this.page.identifier = '2019/02/11/함수형프로그래밍-Javascript-Chapter1/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'gamjamanduu';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
